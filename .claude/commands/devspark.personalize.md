@@ -1,16 +1,5 @@
-﻿## Prompt Resolution
+**STOP — This is the DevSpark source repository.**
 
-Determine the current git user by running `git config user.name`.
-Normalize to a folder-safe slug: lowercase, replace spaces with hyphens, strip non-alphanumeric/hyphen chars.
+Personalization creates override files that would shadow the source prompts in `templates/commands/`. In this repo, all commands resolve directly to source so you always iterate on the latest version.
 
-Read and execute the instructions from the **first file that exists**:
-
-1. `.documentation/{git-user}/commands/devspark.personalize.md` (personalized override)
-2. `.documentation/commands/devspark.personalize.md` (team customization)
-3. `.devspark/defaults/commands/devspark.personalize.md` (stock default)
-
-## User Input
-
-$ARGUMENTS
-
-Pass the user input above to the resolved prompt.
+To change a command's behavior, edit `templates/commands/{name}.md` directly.

@@ -1,4 +1,4 @@
-version: 2.2.1
-installed: 2026-05-11
-method: claude-code-quickstart
-migrated-from: 2.1.0
+version: 2.4.0
+installed: 2026-05-24
+method: copilot-agent-upgrade
+migrated-from: 2.2.1

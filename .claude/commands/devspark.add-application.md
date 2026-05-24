@@ -1,16 +1,5 @@
-﻿## Prompt Resolution
+**STOP — This is the DevSpark source repository.**
 
-Determine the current git user by running `git config user.name`.
-Normalize to a folder-safe slug: lowercase, replace spaces with hyphens, strip non-alphanumeric/hyphen chars.
+DevSpark is not a multi-app monorepo. The `add-application` command is designed for consumer repos that manage multiple applications.
 
-Read and execute the instructions from the **first file that exists**:
-
-1. `.documentation/{git-user}/commands/devspark.add-application.md` (personalized override)
-2. `.documentation/commands/devspark.add-application.md` (team customization)
-3. `.devspark/defaults/commands/devspark.add-application.md` (stock default)
-
-## User Input
-
-$ARGUMENTS
-
-Pass the user input above to the resolved prompt.
+To test this command, use the fixtures in `tests/fixtures/` or the `examples/todo-app/` sample.

@@ -1,23 +1,10 @@
 ---
-description: Display all registered applications in the multi-app repository with metadata, dependencies, and documentation roots.
+name: devspark.list-applications
+description: Display all registered applications in the multi-app repository with metadata, dependencies, and documentation roots
 ---
 
-## Prompt Resolution
+**STOP — This is the DevSpark source repository.**
 
-Determine the current git user by running `git config user.name`.
-Normalize to a folder-safe slug: lowercase, replace spaces with hyphens, strip non-alphanumeric/hyphen chars.
+DevSpark is not a multi-app monorepo. The `list-applications` command is designed for consumer repos that manage multiple applications.
 
-Read and execute the instructions from the **first file that exists**:
-1. `.documentation/{git-user}/commands/devspark.list-applications.md` (personalized override)
-2. `.documentation/commands/devspark.list-applications.md` (team customization)
-3. `.devspark/defaults/commands/devspark.list-applications.md` (stock default)
-
-Where `{git-user}` is the normalized slug from step above.
-
-## User Input
-
-```text
-$ARGUMENTS
-```
-
-Pass the user input above to the resolved prompt.
+To test this command, use the fixtures in `tests/fixtures/` or the `examples/todo-app/` sample.

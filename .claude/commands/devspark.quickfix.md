@@ -1,16 +1,3 @@
-﻿## Prompt Resolution
+Read and follow the instructions in `templates/commands/quickfix.md` exactly.
 
-Determine the current git user by running `git config user.name`.
-Normalize to a folder-safe slug: lowercase, replace spaces with hyphens, strip non-alphanumeric/hyphen chars.
-
-Read and execute the instructions from the **first file that exists**:
-
-1. `.documentation/{git-user}/commands/devspark.quickfix.md` (personalized override)
-2. `.documentation/commands/devspark.quickfix.md` (team customization)
-3. `.devspark/defaults/commands/devspark.quickfix.md` (stock default)
-
-## User Input
-
-$ARGUMENTS
-
-Pass the user input above to the resolved prompt.
+User input: $ARGUMENTS
