@@ -76,31 +76,36 @@
 **All exported code must be documented with JSDoc comments. All documentation must match current code state.**
 
 **Code Documentation:**
+
 - All exported functions MUST have JSDoc comments explaining purpose, parameters, and return values
 - All exported components MUST have JSDoc comments describing props and behavior
 - All exported types/interfaces SHOULD have documentation
 - Complex logic SHOULD have inline comments explaining rationale (why, not what)
 
 **Markdown Documentation Standards:**
+
 - Documentation that is out of sync with code is worse than no documentation ("less is more")
 - ALL documentation MUST reflect the CURRENT state of the codebase
 - Documentation referencing future features, TODOs, or completed specs MUST be removed/archived
 - When code changes, update or delete affected documentation in the SAME commit
 
 **Forbidden in Production Code:**
+
 - NO `// TODO:` comments in code (use GitHub Issues instead)
 - NO `// FIXME:` comments (fix it or create an issue)
 - NO `// SPEC:` or planning comments in code files
 - NO implementation strategy comments (belongs in specs during development, deleted after merge)
 
 **File Organization:**
-- Root-level .md files: ONLY `README.md` is allowed
+
+- Root-level .md files: only `README.md`, `CHANGELOG.md`, and `CLAUDE.md` are allowed
 - Permanent docs: `/.documentation/*.md` (keep updated with code)
 - Working/session docs: `.documentation/copilot/` (delete or archive after completion)
 - Active specs: `.documentation/specs/NNN-feature/*.md` (archive after merge via `/devspark.archive`)
 - Configuration: `.github/prompts/*.prompt.md`, `.github/agents/*.agent.md` (permanent)
 
 **Documentation Lifecycle:**
+
 1. Working docs created in `.documentation/copilot/` with date prefix
 2. Keep ONLY while actively relevant (days, not weeks)
 3. On completion: extract insights to permanent docs, then archive via `/devspark.archive` to `.archive/YYYY-MM-DD/`
@@ -286,6 +291,7 @@
 - `/devspark.pr-review` command performs constitution-aware PR reviews
 
 **Documentation Enforcement:**
+
 - PRs with root-level .md files (other than README.md) MUST be rejected
 - PRs with out-of-sync documentation MUST be rejected
 - Code with TODO/FIXME comments MUST be rejected (create GitHub Issue instead)

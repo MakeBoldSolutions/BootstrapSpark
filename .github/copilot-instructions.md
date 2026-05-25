@@ -46,7 +46,7 @@
   
   **FORBIDDEN LOCATIONS FOR NEW .md FILES:**
   
-  ❌ Never create .md files in repo root (except README.md)
+  ❌ Never create .md files in repo root (except README.md, CHANGELOG.md, and CLAUDE.md)
   ❌ Never create .md files in `/specs` (use `.documentation/specs` instead)
   ❌ Never create summary/status/checklist docs without archival date in filename
   
@@ -87,7 +87,7 @@
   
   **ENFORCEMENT**
   
-  - PRs with root-level .md files (other than README.md) MUST be rejected
+  - PRs with root-level .md files (other than README.md, CHANGELOG.md, and CLAUDE.md) MUST be rejected
   - PRs with out-of-sync documentation MUST be rejected
   - Code with TODO comments MUST be rejected (create GitHub Issue instead)
   - Quarterly documentation audits MUST purge stale working docs
