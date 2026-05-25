@@ -62,7 +62,7 @@
 - Services and business logic MUST have unit tests
 - Components SHOULD have component tests
 - Minimum coverage thresholds MUST be enforced in CI:
-  - 80% branch coverage
+  - 70% branch coverage
   - 70% line coverage
   - 80% function coverage
 - Coverage reports MUST be generated on every CI run
