@@ -1,12 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import JokeService, { Joke } from "../../../src/services/JokeService";
 
-// Mock axios
-vi.mock("axios");
-
-// Import axios after mocking
-import axios from "axios";
-
 const mockSingleJoke: Joke = {
   error: false,
   type: "single",
@@ -47,6 +41,7 @@ const mockTwoPartJoke: Joke = {
 describe("JokeService", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    global.fetch = vi.fn();
     JokeService.clearCache();
   });
 
@@ -55,39 +50,41 @@ describe("JokeService", () => {
   });
 
   it("should fetch joke from API successfully", async () => {
-    // Mock successful axios response
-    vi.mocked(axios.get).mockResolvedValue({
-      data: mockSingleJoke,
-    });
+    vi.mocked(global.fetch).mockResolvedValue({
+      ok: true,
+      json: async () => mockSingleJoke,
+    } as Response);
 
     const joke = await JokeService.fetchJoke();
 
     expect(joke).toBeDefined();
     expect(joke.error).toBe(false);
     expect(joke.category).toBeDefined();
-    expect(axios.get).toHaveBeenCalled();
+    expect(global.fetch).toHaveBeenCalled();
   });
 
   it("should filter jokes by category", async () => {
     const programmingJoke = { ...mockSingleJoke, category: "Programming" };
 
-    vi.mocked(axios.get).mockResolvedValue({
-      data: programmingJoke,
-    });
+    vi.mocked(global.fetch).mockResolvedValue({
+      ok: true,
+      json: async () => programmingJoke,
+    } as Response);
 
     const joke = await JokeService.fetchJoke("Programming", true);
 
     expect(joke.category).toBe("Programming");
-    expect(axios.get).toHaveBeenCalledWith(
+    expect(global.fetch).toHaveBeenCalledWith(
       expect.stringContaining("category=Programming"),
       expect.any(Object)
     );
   });
 
   it("should handle single-part jokes", async () => {
-    vi.mocked(axios.get).mockResolvedValue({
-      data: mockSingleJoke,
-    });
+    vi.mocked(global.fetch).mockResolvedValue({
+      ok: true,
+      json: async () => mockSingleJoke,
+    } as Response);
 
     const joke = await JokeService.fetchJoke();
 
@@ -99,9 +96,10 @@ describe("JokeService", () => {
   });
 
   it("should handle two-part jokes", async () => {
-    vi.mocked(axios.get).mockResolvedValue({
-      data: mockTwoPartJoke,
-    });
+    vi.mocked(global.fetch).mockResolvedValue({
+      ok: true,
+      json: async () => mockTwoPartJoke,
+    } as Response);
 
     const joke = await JokeService.fetchJoke();
 
@@ -113,8 +111,7 @@ describe("JokeService", () => {
   });
 
   it("should handle API errors gracefully", async () => {
-    // Mock API error
-    vi.mocked(axios.get).mockRejectedValue(new Error("Network error"));
+    vi.mocked(global.fetch).mockRejectedValue(new Error("Network error"));
 
     const joke = await JokeService.fetchJoke();
 
@@ -129,13 +126,10 @@ describe("JokeService", () => {
   });
 
   it("should handle API error response", async () => {
-    // Mock API returning error in response data
-    vi.mocked(axios.get).mockResolvedValue({
-      data: {
-        error: true,
-        message: "No jokes found",
-      },
-    });
+    vi.mocked(global.fetch).mockResolvedValue({
+      ok: true,
+      json: async () => ({ error: true, message: "No jokes found" }),
+    } as Response);
 
     const joke = await JokeService.fetchJoke();
 
@@ -159,14 +153,14 @@ describe("JokeService", () => {
   });
 
   it("should handle invalid joke data with fallback", async () => {
-    // Mock API returning invalid data structure
-    vi.mocked(axios.get).mockResolvedValue({
-      data: {
+    vi.mocked(global.fetch).mockResolvedValue({
+      ok: true,
+      json: async () => ({
         error: false,
         type: "invalid-type", // Invalid: should be 'single' or 'twopart'
         category: "Programming",
-      },
-    });
+      }),
+    } as Response);
 
     const joke = await JokeService.fetchJoke();
 

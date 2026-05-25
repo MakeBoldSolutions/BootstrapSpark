@@ -1,6 +1,5 @@
 // hooks/useFetchVariants.ts
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { Variant } from "../types";
 
 export const useFetchVariants = (url: string) => {
@@ -11,8 +10,10 @@ export const useFetchVariants = (url: string) => {
   useEffect(() => {
     const fetchVariants = async () => {
       try {
-        const response = await axios.get<Variant[]>(url);
-        setVariants(response.data);
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Failed to fetch variants: ${response.status}`);
+        const data: Variant[] = await response.json();
+        setVariants(data);
       } catch (err) {
         console.error(err);
         setError("Failed to load variants.");

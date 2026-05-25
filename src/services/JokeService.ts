@@ -1,4 +1,3 @@
-import axios, { AxiosError } from "axios";
 import { z } from "zod";
 
 // Zod schemas for runtime validation
@@ -108,9 +107,8 @@ class JokeService {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
-      const response = await axios.get(fullUrl, {
+      const response = await fetch(fullUrl, {
         signal: controller.signal,
-        timeout: 10000,
         headers: {
           Accept: "application/json",
         },
@@ -118,17 +116,23 @@ class JokeService {
 
       clearTimeout(timeoutId);
 
-      if (!response.data) {
+      if (!response.ok) {
+        throw new Error(`Joke API request failed: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      if (!data) {
         throw new Error("No data received from joke API");
       }
 
-      if (response.data.error) {
-        throw new Error(`Joke API error: ${response.data.message || "Unknown error"}`);
+      if (data.error) {
+        throw new Error(`Joke API error: ${data.message || "Unknown error"}`);
       }
 
       // Validate response with Zod schema
       try {
-        const joke = JokeAPIResponseSchema.parse(response.data);
+        const joke = JokeAPIResponseSchema.parse(data);
         console.log(`Successfully fetched joke: ${joke.type} joke in ${joke.category} category`);
         return joke;
       } catch (zodError) {
@@ -157,14 +161,10 @@ class JokeService {
         lang: "en",
       };
 
-      if (error instanceof AxiosError) {
-        if (error.code === "ECONNABORTED") {
-          console.log("Joke request timed out, using fallback");
-        } else if (error.response?.status) {
-          console.log(`Joke API responded with status ${error.response.status}, using fallback`);
-        } else {
-          console.log("Network error fetching joke, using fallback");
-        }
+      if (error instanceof DOMException && error.name === "AbortError") {
+        console.log("Joke request timed out, using fallback");
+      } else if (error instanceof Error) {
+        console.log(`Joke fetch error: ${error.message}, using fallback`);
       }
 
       return fallbackJoke;
