@@ -63,7 +63,7 @@ const Footer: React.FC = () => {
                 Mark Hazleton
               </a>{" "}
               ·{" "}
-              <a href="https://markboldsolutions.com" className="text-decoration-none">
+              <a href="https://makeboldspark.com" className="text-decoration-none">
                 MakeBoldSolutions
               </a>
             </p>
