@@ -179,6 +179,27 @@ export default defineConfig({
           });
         },
       },
+      "/api/articles": {
+        target: "https://markhazleton.com",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/articles/, "/articles.json"),
+        secure: true,
+        configure: (proxy) => {
+          proxy.on("error", (err) => {
+            console.log("articles proxy error", err);
+          });
+          proxy.on("proxyReq", (proxyReq, req) => {
+            console.log("Sending Articles Request to the Target:", req.method, req.url);
+          });
+          proxy.on("proxyRes", (proxyRes, req) => {
+            console.log(
+              "Received Articles Response from the Target:",
+              proxyRes.statusCode,
+              req.url
+            );
+          });
+        },
+      },
       "/api/asyncspark": {
         target: "https://web.makeboldspark.com",
         changeOrigin: true,

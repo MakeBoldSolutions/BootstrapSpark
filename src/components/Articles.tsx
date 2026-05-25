@@ -11,13 +11,18 @@ import {
   SortUp,
 } from "react-bootstrap-icons";
 import { format } from "date-fns";
-import { fetchRssFeed, RssArticle } from "../services/RssService";
+import {
+  fetchArticles,
+  Article,
+  getArticleUrl,
+  getArticleImageUrl,
+} from "../services/ArticleService";
 
 type SortDirection = "newest" | "oldest";
 
 /**
  * Articles component displays a searchable, filterable, and paginated list of RSS articles.
- * 
+ *
  * Features:
  * - Fetches articles from RSS feed with caching
  * - Search functionality across titles and content
@@ -25,17 +30,17 @@ type SortDirection = "newest" | "oldest";
  * - Sorting by date (newest/oldest)
  * - Pagination with configurable items per page
  * - Data source and cache status indicators
- * 
+ *
  * @component
  * @example
  * ```tsx
  * <Articles />
  * ```
- * 
+ *
  * @returns {JSX.Element} The rendered Articles page with search, filter, and pagination controls
  */
 const Articles: React.FC = () => {
-  const [articles, setArticles] = useState<RssArticle[]>([]);
+  const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -43,7 +48,6 @@ const Articles: React.FC = () => {
   const [categories, setCategories] = useState<string[]>(["all"]);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [debugInfo, setDebugInfo] = useState<string | null>(null);
-  const [dataSource, setDataSource] = useState<string | null>(null);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -58,21 +62,21 @@ const Articles: React.FC = () => {
     const loadArticles = async () => {
       try {
         setLoading(true);
-        setDebugInfo("Attempting to fetch RSS feed...");
+        setDebugInfo("Attempting to fetch articles...");
 
-        // Use our service to fetch RSS articles with fallback
-        const articleData = await fetchRssFeed();
+        // Use our service to fetch articles from markhazleton.com/articles.json
+        const articleData = await fetchArticles();
 
         // Only update state if component is still mounted
         if (!isMounted) return;
 
-        setDebugInfo(`Successfully loaded ${articleData.length} articles from RSS feed`);
+        setDebugInfo(`Successfully loaded ${articleData.length} articles`);
 
         // Extract unique categories
         const categorySet = new Set<string>(["all"]);
         articleData.forEach((article) => {
-          if (article.category) {
-            categorySet.add(article.category);
+          if (article.Section) {
+            categorySet.add(article.Section);
           }
         });
 
@@ -80,15 +84,10 @@ const Articles: React.FC = () => {
         setCategories(Array.from(categorySet));
 
         // Check localStorage for metadata
-        const rssLastUpdated = localStorage.getItem("rssLastUpdated");
-        const rssSource = localStorage.getItem("rssSource");
+        const articlesLastUpdated = localStorage.getItem("articlesLastUpdated");
 
-        if (rssLastUpdated) {
-          setLastUpdated(rssLastUpdated);
-        }
-
-        if (rssSource) {
-          setDataSource(rssSource);
+        if (articlesLastUpdated) {
+          setLastUpdated(articlesLastUpdated);
         }
 
         setLoading(false);
@@ -132,17 +131,19 @@ const Articles: React.FC = () => {
   // Filter articles based on search term and category
   const filteredArticles = articles.filter((article) => {
     const matchesSearch =
-      searchTerm === "" || article.title.toLowerCase().includes(searchTerm.toLowerCase());
+      searchTerm === "" ||
+      article.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      article.description.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesFilter = filter === "all" || article.category === filter;
+    const matchesFilter = filter === "all" || article.Section === filter;
 
     return matchesSearch && matchesFilter;
   });
 
   // Sort articles by date
   const sortedArticles = [...filteredArticles].sort((a, b) => {
-    const dateA = new Date(a.pubDate).getTime();
-    const dateB = new Date(b.pubDate).getTime();
+    const dateA = new Date(a.publishedDate).getTime();
+    const dateB = new Date(b.publishedDate).getTime();
 
     return sortDirection === "newest" ? dateB - dateA : dateA - dateB;
   });
@@ -176,20 +177,19 @@ const Articles: React.FC = () => {
       setDebugInfo("Refreshing RSS feed...");
 
       // Clear cached data to force a fresh fetch
-      localStorage.removeItem("cachedRssData");
-      localStorage.removeItem("rssLastUpdated");
-      localStorage.removeItem("rssSource");
-      localStorage.removeItem("rssArticleCount");
+      localStorage.removeItem("cachedArticlesData");
+      localStorage.removeItem("articlesLastUpdated");
+      localStorage.removeItem("articlesCount");
 
-      const articleData = await fetchRssFeed();
+      const articleData = await fetchArticles();
 
-      setDebugInfo(`Successfully refreshed ${articleData.length} articles from RSS feed`);
+      setDebugInfo(`Successfully refreshed ${articleData.length} articles`);
 
       // Extract unique categories
       const categorySet = new Set<string>(["all"]);
       articleData.forEach((article) => {
-        if (article.category) {
-          categorySet.add(article.category);
+        if (article.Section) {
+          categorySet.add(article.Section);
         }
       });
 
@@ -197,15 +197,10 @@ const Articles: React.FC = () => {
       setCategories(Array.from(categorySet));
 
       // Check localStorage for updated metadata
-      const rssLastUpdated = localStorage.getItem("rssLastUpdated");
-      const rssSource = localStorage.getItem("rssSource");
+      const articlesLastUpdated = localStorage.getItem("articlesLastUpdated");
 
-      if (rssLastUpdated) {
-        setLastUpdated(rssLastUpdated);
-      }
-
-      if (rssSource) {
-        setDataSource(rssSource);
+      if (articlesLastUpdated) {
+        setLastUpdated(articlesLastUpdated);
       }
 
       setLoading(false);
@@ -234,18 +229,11 @@ const Articles: React.FC = () => {
                 <small className="ms-2">(Last updated: {formatDate(lastUpdated)})</small>
               )}
             </p>
-            {(debugInfo || dataSource) && (
+            {debugInfo && (
               <div className="small text-theme-muted mt-1">
-                {debugInfo && (
-                  <div>
-                    <strong>Status:</strong> {debugInfo}
-                  </div>
-                )}
-                {dataSource && (
-                  <div>
-                    <strong>Source:</strong> {dataSource}
-                  </div>
-                )}
+                <div>
+                  <strong>Status:</strong> {debugInfo}
+                </div>
               </div>
             )}
           </div>
@@ -348,31 +336,28 @@ const Articles: React.FC = () => {
               {currentArticles.map((article, index) => (
                 <div className="col" key={index}>
                   <Card className="h-100 shadow-sm border-theme transition">
-                    {article.thumbnail && (
-                      <Card.Img
-                        variant="top"
-                        src={article.thumbnail}
-                        alt={article.title}
-                        style={{
-                          height: "200px",
-                          objectFit: "cover",
-                          borderBottom: "1px solid var(--bs-border-color)",
-                        }}
-                        onError={(e) => {
-                          // Hide image if it fails to load
-                          (e.target as HTMLImageElement).style.display = "none";
-                        }}
-                      />
-                    )}
+                    <Card.Img
+                      variant="top"
+                      src={getArticleImageUrl(article.image_metadata.thumbnail)}
+                      alt={article.name}
+                      style={{
+                        height: "200px",
+                        objectFit: "cover",
+                        borderBottom: "1px solid var(--bs-border-color)",
+                      }}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = "none";
+                      }}
+                    />
                     <Card.Body className="bg-card">
                       <Card.Title className="mb-3">
                         <a
-                          href={article.link}
+                          href={getArticleUrl(article.slug)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-theme text-decoration-none stretched-link"
                         >
-                          {article.title}
+                          {article.name}
                         </a>
                       </Card.Title>
 
@@ -387,14 +372,24 @@ const Articles: React.FC = () => {
                       <div className="d-flex align-items-center justify-content-between mt-3">
                         <div className="d-flex align-items-center text-theme-muted small">
                           <Calendar3 className="me-1" />
-                          {formatDate(article.pubDate)}
+                          {formatDate(article.publishedDate)}
                         </div>
 
-                        {article.category && (
-                          <Badge bg="secondary" className="bg-opacity-25 py-1 px-2 text-theme-alt">
-                            {article.category}
-                          </Badge>
-                        )}
+                        <div className="d-flex gap-1 align-items-center">
+                          {article.estimatedReadTime > 0 && (
+                            <Badge bg="info" className="bg-opacity-25 py-1 px-2 text-theme-alt">
+                              {article.estimatedReadTime} min
+                            </Badge>
+                          )}
+                          {article.Section && (
+                            <Badge
+                              bg="secondary"
+                              className="bg-opacity-25 py-1 px-2 text-theme-alt"
+                            >
+                              {article.Section}
+                            </Badge>
+                          )}
+                        </div>
                       </div>
                     </Card.Body>
                     <Card.Footer className="border-top border-theme bg-card">
@@ -490,8 +485,8 @@ const Articles: React.FC = () => {
               <div className="card-body bg-card">
                 <p className="text-theme">
                   This Articles component provides a dynamic, responsive interface for fetching and
-                  displaying blog posts from an RSS feed. It demonstrates several modern React
-                  patterns and techniques:
+                  displaying blog posts from markhazleton.com/articles.json. It demonstrates several
+                  modern React patterns and techniques:
                 </p>
 
                 <div className="row">
@@ -530,9 +525,11 @@ const Articles: React.FC = () => {
                 <ol className="mb-3 text-theme">
                   <li className="mb-2">
                     <strong>Fetching Data:</strong> The component loads data using the{" "}
-                    <code className="bg-theme-alt text-theme-alt px-1 rounded">fetchRssFeed()</code>{" "}
-                    service, which attempts to retrieve RSS feed data from the primary source, with
-                    fallbacks to secondary sources and cached data if needed.
+                    <code className="bg-theme-alt text-theme-alt px-1 rounded">
+                      fetchArticles()
+                    </code>{" "}
+                    service, which retrieves article data from markhazleton.com/articles.json via a
+                    CORS proxy, with localStorage caching for performance.
                   </li>
                   <li className="mb-2">
                     <strong>State Management:</strong> Multiple state variables track different

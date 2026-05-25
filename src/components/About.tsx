@@ -14,7 +14,7 @@ import {
 import { Alert, Spinner } from "react-bootstrap";
 import { format } from "date-fns";
 import profile from "../data/profile.json";
-import { fetchRssFeed, RssArticle } from "../services/RssService";
+import { fetchArticles, Article, getArticleUrl } from "../services/ArticleService";
 import { useSEO } from "../contexts/useSEO";
 import "../styles/About.css"; // Import the external CSS file
 
@@ -36,7 +36,7 @@ import "../styles/About.css"; // Import the external CSS file
  * @returns {JSX.Element} The rendered About page with profile and articles
  */
 const About: React.FC = () => {
-  const [bootstrapSparkArticles, setBootstrapSparkArticles] = useState<RssArticle[]>([]);
+  const [recentArticles, setRecentArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { setTitle, setDescription } = useSEO();
@@ -50,36 +50,27 @@ const About: React.FC = () => {
   }, [setTitle, setDescription]);
 
   useEffect(() => {
-    const loadBootstrapSparkArticles = async () => {
+    const loadRecentArticles = async () => {
       try {
         setLoading(true);
 
-        // Fetch all articles
-        const articles = await fetchRssFeed();
+        const articles = await fetchArticles();
 
-        // Filter for articles with BootstrapSpark category
-        const filteredArticles = articles.filter(
-          (article) =>
-            article.category?.toLowerCase() === "bootstrapspark" ||
-            article.title.toLowerCase().includes("bootstrapspark") ||
-            article.title.toLowerCase().includes("reactspark")
-        );
-
-        // Sort by date (newest first) and take up to 3
-        const sortedArticles = filteredArticles
-          .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
+        // Sort by publishedDate (newest first) and take up to 3
+        const sorted = [...articles]
+          .sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime())
           .slice(0, 3);
 
-        setBootstrapSparkArticles(sortedArticles);
+        setRecentArticles(sorted);
         setLoading(false);
       } catch (err) {
-        console.error("Error loading BootstrapSpark articles:", err);
+        console.error("Error loading recent articles:", err);
         setError(err instanceof Error ? err.message : "Unknown error loading articles");
         setLoading(false);
       }
     };
 
-    loadBootstrapSparkArticles();
+    loadRecentArticles();
   }, []);
 
   const formatDate = (dateString: string) => {
@@ -251,7 +242,7 @@ const About: React.FC = () => {
                 </div>
 
                 {/* BootstrapSpark Articles Section */}
-                <h3 className="h5 mb-3 border-top pt-4">Featured BootstrapSpark Articles</h3>
+                <h3 className="h5 mb-3 border-top pt-4">Recent Articles from Mark Hazleton</h3>
 
                 {loading && (
                   <div className="d-flex justify-content-center my-4">
@@ -267,34 +258,33 @@ const About: React.FC = () => {
                   </Alert>
                 )}
 
-                {!loading && !error && bootstrapSparkArticles.length === 0 && (
+                {!loading && !error && recentArticles.length === 0 && (
                   <Alert variant="info" className="d-flex align-items-center">
                     <InfoCircle className="me-2 flex-shrink-0" />
-                    <div className="small">
-                      No BootstrapSpark articles found. Check back soon for updates!
-                    </div>
+                    <div className="small">No articles found. Check back soon for updates!</div>
                   </Alert>
                 )}
 
-                {!loading && !error && bootstrapSparkArticles.length > 0 && (
+                {!loading && !error && recentArticles.length > 0 && (
                   <div className="list-group list-group-flush">
-                    {bootstrapSparkArticles.map((article, index) => (
+                    {recentArticles.map((article, index) => (
                       <a
                         key={index}
-                        href={article.link}
+                        href={getArticleUrl(article.slug)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0 px-0 py-2"
-                        title={article.title}
+                        title={article.name}
                       >
                         <div className="d-flex align-items-center">
                           <span className="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center me-3 article-badge">
                             {index + 1}
                           </span>
                           <div>
-                            <h5 className="h6 mb-0 small text-theme">{article.title}</h5>
+                            <h5 className="h6 mb-0 small text-theme">{article.name}</h5>
                             <small className="text-theme-muted d-flex align-items-center mt-1">
-                              <Calendar3 className="me-1" size={12} /> {formatDate(article.pubDate)}
+                              <Calendar3 className="me-1" size={12} />{" "}
+                              {formatDate(article.publishedDate)}
                             </small>
                           </div>
                         </div>
