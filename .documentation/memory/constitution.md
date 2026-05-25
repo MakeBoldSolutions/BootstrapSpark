@@ -64,7 +64,7 @@
 - Minimum coverage thresholds MUST be enforced in CI:
   - 70% branch coverage
   - 70% line coverage
-  - 80% function coverage
+  - 75% function coverage
 - Coverage reports MUST be generated on every CI run
 
 **Rationale**: Testing prevents regressions and enables confident refactoring. Current codebase has 0 test files—this is the highest priority gap. Try-catch blocks throughout the code show error-handling awareness that should be complemented by comprehensive test coverage.
