@@ -1,6 +1,4 @@
-﻿const axios = require("axios");
-
-// Whitelisted origins for CORS
+﻿// Whitelisted origins for CORS
 const ALLOWED_ORIGINS = [
   "https://Bootstrap.makeboldspark.com",
   "https://bootstrapspark.makeboldspark.com",
@@ -40,20 +38,29 @@ module.exports = async function (context, req) {
     context.log(`Fetching projects from: ${projectsUrl}`);
 
     // Make request to projects.json with timeout
-    const response = await axios.get(projectsUrl, {
-      timeout: 5000,
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    const response = await fetch(projectsUrl, {
+      signal: controller.signal,
       headers: {
         "User-Agent": "BootstrapSpark/1.0",
       },
     });
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`Upstream fetch failed: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
 
     // Validate the response
-    if (!response.data) {
+    if (!data) {
       throw new Error("No data received from projects API");
     }
 
     // Validate that it's an array
-    if (!Array.isArray(response.data)) {
+    if (!Array.isArray(data)) {
       throw new Error("Projects data is not an array");
     }
 
@@ -64,7 +71,7 @@ module.exports = async function (context, req) {
       return `https://markhazleton.com/${cleaned}`;
     };
 
-    const transformedProjects = response.data.map((project) => {
+    const transformedProjects = data.map((project) => {
       if (project.image) {
         project.image = toAbsolute(project.image);
       }

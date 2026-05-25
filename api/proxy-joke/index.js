@@ -1,6 +1,4 @@
-﻿const axios = require("axios");
-
-// Whitelisted origins for CORS
+﻿// Whitelisted origins for CORS
 const ALLOWED_ORIGINS = [
   "https://Bootstrap.makeboldspark.com",
   "https://bootstrapspark.makeboldspark.com",
@@ -65,21 +63,30 @@ module.exports = async function (context, req) {
     context.log(`Fetching joke from: ${jokeApiUrl}`);
 
     // Make request to JokeAPI with timeout
-    const response = await axios.get(jokeApiUrl, {
-      timeout: 5000,
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    const response = await fetch(jokeApiUrl, {
+      signal: controller.signal,
       headers: {
         "User-Agent": "BootstrapSpark/1.0",
       },
     });
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`JokeAPI request failed: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
 
     // Validate the response
-    if (!response.data) {
+    if (!data) {
       throw new Error("No data received from JokeAPI");
     }
 
     // Check if the API returned an error
-    if (response.data.error) {
-      throw new Error(`JokeAPI error: ${response.data.message || "Unknown error"}`);
+    if (data.error) {
+      throw new Error(`JokeAPI error: ${data.message || "Unknown error"}`);
     }
 
     context.log("Successfully fetched joke");
@@ -88,7 +95,7 @@ module.exports = async function (context, req) {
     context.res = {
       status: 200,
       headers: context.res.headers,
-      body: response.data,
+      body: data,
     };
   } catch (error) {
     context.log.error("Error fetching joke:", error.message);

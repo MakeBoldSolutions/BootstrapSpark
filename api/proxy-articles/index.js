@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 const ALLOWED_ORIGINS = [
   "https://Bootstrap.makeboldspark.com",
   "https://bootstrapspark.makeboldspark.com",
@@ -32,17 +30,26 @@ module.exports = async function (context, req) {
   try {
     context.log(`Fetching articles from: ${ARTICLES_URL}`);
 
-    const response = await axios.get(ARTICLES_URL, {
-      timeout: 10000,
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    const response = await fetch(ARTICLES_URL, {
+      signal: controller.signal,
       headers: { "User-Agent": "BootstrapSpark/1.0" },
     });
+    clearTimeout(timeoutId);
 
-    if (!response.data || !Array.isArray(response.data)) {
+    if (!response.ok) {
+      throw new Error(`Upstream fetch failed: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    if (!data || !Array.isArray(data)) {
       throw new Error("Articles data is not an array");
     }
 
     // Resolve relative image paths to absolute URLs
-    const articles = response.data.map((article) => {
+    const articles = data.map((article) => {
       if (article.img_src && !article.img_src.startsWith("http")) {
         article.img_src = `https://markhazleton.com${article.img_src}`;
       }

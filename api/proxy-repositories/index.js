@@ -1,6 +1,4 @@
-﻿const axios = require("axios");
-
-const ALLOWED_ORIGINS = [
+﻿const ALLOWED_ORIGINS = [
   "https://Bootstrap.makeboldspark.com",
   "https://bootstrapspark.makeboldspark.com",
   "https://markhazleton.github.io",
@@ -33,15 +31,22 @@ module.exports = async function (context, req) {
   }
 
   try {
-    const response = await axios.get(REPOSITORY_SOURCE_URL, {
-      timeout: 8000,
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+    const response = await fetch(REPOSITORY_SOURCE_URL, {
+      signal: controller.signal,
       headers: {
         "User-Agent": "BootstrapSpark/1.0 Repository-Proxy",
         Accept: "application/json",
       },
     });
+    clearTimeout(timeoutId);
 
-    const payload = response.data;
+    if (!response.ok) {
+      throw new Error(`Upstream fetch failed: ${response.status} ${response.statusText}`);
+    }
+
+    const payload = await response.json();
     const hasMinimumShape =
       payload && payload.profile && Array.isArray(payload.repositories) && payload.metadata;
 

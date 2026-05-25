@@ -1,8 +1,6 @@
 ﻿// Azure Function to proxy RSS feed requests
 // This avoids CORS issues by having the server fetch the RSS feed instead of the browser
 
-const fetch = require("node-fetch");
-
 // Whitelisted origins for CORS
 const ALLOWED_ORIGINS = [
   "https://Bootstrap.makeboldspark.com",
@@ -44,15 +42,17 @@ module.exports = async function (context, req) {
 
   try {
     // Fetch the RSS feed from the source with improved settings
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
     const response = await fetch(sourceUrl, {
+      signal: controller.signal,
       headers: {
         Accept: "application/xml, text/xml, application/rss+xml, */*",
         "User-Agent": "BootstrapSpark/1.0 RSS-Proxy (Node.js)",
         "Cache-Control": "no-cache",
       },
-      timeout: 15000, // 15 second timeout
-      follow: 3, // Follow up to 3 redirects
     });
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       context.log.error(
