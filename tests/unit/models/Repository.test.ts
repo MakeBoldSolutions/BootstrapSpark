@@ -38,15 +38,10 @@ describe("Repository view model derivation", () => {
     expect(card.summaryText).toBe("No description is available yet.");
   });
 
-  it("prefers curated repositories for featured selection", () => {
-    const curatedRepositories: RepositoryFeed["repositories"] = [
-      { ...parsed.repositories[0], name: "curated-repo", curated: true },
-      ...parsed.repositories.slice(1),
-    ];
-
-    const featured = selectFeaturedRepositories(curatedRepositories, 3);
+  it("selects featured repositories by score ranking", () => {
+    const featured = selectFeaturedRepositories(parsed.repositories, 3);
     expect(featured.length).toBeGreaterThan(0);
-    expect(featured[0].featuredSource).toBe("curated");
+    expect(featured[0].featuredSource).toBe("automatic");
   });
 
   it("creates a full showcase model and excludes private repositories", () => {

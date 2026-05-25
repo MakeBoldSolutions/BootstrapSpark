@@ -26,4 +26,29 @@ describe("repository feed contract", () => {
       expect(repo.pushed_at).toBeTruthy();
     }
   });
+
+  it("parses new analytics fields when present", () => {
+    const parsed = RepositoryFeedSchema.parse(repositoryFeed);
+    const withMetrics = parsed.repositories.filter((r) => r.attention_score !== undefined);
+    expect(withMetrics.length).toBeGreaterThan(0);
+    for (const repo of withMetrics) {
+      expect(typeof repo.attention_score).toBe("number");
+      expect(typeof repo.rank).toBe("number");
+      expect(typeof repo.composite_score).toBe("number");
+    }
+  });
+
+  it("parses commit_history sub-schema fields", () => {
+    const parsed = RepositoryFeedSchema.parse(repositoryFeed);
+    const withHistory = parsed.repositories.filter((r) => r.commit_history !== undefined);
+    expect(withHistory.length).toBeGreaterThan(0);
+    for (const repo of withHistory) {
+      if (repo.commit_history?.recent_90d !== undefined) {
+        expect(typeof repo.commit_history.recent_90d).toBe("number");
+      }
+      if (repo.commit_history?.repository_name !== undefined) {
+        expect(typeof repo.commit_history.repository_name).toBe("string");
+      }
+    }
+  });
 });

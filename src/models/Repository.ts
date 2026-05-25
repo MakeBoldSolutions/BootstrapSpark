@@ -13,6 +13,10 @@ const optionalUrlSchema = z.preprocess((value) => {
 export const FeedMetadataSchema = z.object({
   generated_at: z.string().min(1, { message: "metadata.generated_at is required" }),
   schema_version: z.string().min(1, { message: "metadata.schema_version is required" }),
+  generator: z.string().optional(),
+  schema_features: z.array(z.string()).optional(),
+  attention_formula_version: z.string().optional(),
+  screenshot_audit: z.unknown().optional(),
   source: z.string().min(1).optional(),
 });
 
@@ -40,16 +44,78 @@ export const RepositorySummarySchema = z.object({
   text: z.string().min(1),
   ai_generated: z.boolean().optional(),
   generation_method: z.string().nullable().optional(),
+  generated_at: z.string().optional(),
+  model_used: z.string().nullable().optional(),
+  tokens_used: z.number().int().nonnegative().nullable().optional(),
   confidence_score: z.number().nullable().optional(),
 });
 
 /** Validation schema for commit history metrics attached to a repository record. */
 export const CommitHistorySummarySchema = z.object({
+  repository_name: z.string().optional(),
   total_commits: z.number().int().nonnegative().optional(),
   recent_90d: z.number().int().nonnegative().optional(),
-  last_commit_date: z.string().optional(),
+  recent_180d: z.number().int().nonnegative().optional(),
+  recent_365d: z.number().int().nonnegative().optional(),
+  last_commit_date: z.string().nullable().optional(),
+  first_commit_date: z.string().nullable().optional(),
   patterns: z.array(z.string()).optional(),
-  days_since_last_commit: z.number().int().nonnegative().optional(),
+  days_since_last_commit: z.number().int().nonnegative().nullable().optional(),
+  activity_rate: z.number().optional(),
+  commit_frequency: z.number().optional(),
+  consistency_score: z.number().optional(),
+});
+
+/** Validation schema for attention metrics. */
+export const AttentionMetricsSchema = z.object({
+  score: z.number(),
+  tier: z.string(),
+  needs_attention: z.boolean(),
+  reasons: z.array(z.string()),
+  components: z.record(z.string(), z.unknown()).optional(),
+});
+
+/** Validation schema for a repository screenshot. */
+export const ScreenshotSchema = z.object({
+  path: z.string(),
+  url: z.string(),
+  captured_at: z.string(),
+  width: z.number().int(),
+  height: z.number().int(),
+  file_size_kb: z.number(),
+});
+
+/** Validation schema for repository security summary. */
+export const SecuritySummarySchema = z.object({
+  availability: z.string().optional(),
+  reason: z.string().optional(),
+  overall_state: z.string().optional(),
+  feature_status: z.record(z.string(), z.unknown()).optional(),
+  active_alert_counts: z.record(z.string(), z.number()).optional(),
+  sources: z.array(z.string()).optional(),
+});
+
+/** Validation schema for repository pull request summary. */
+export const PullRequestSummarySchema = z.object({
+  availability: z.string().optional(),
+  reason: z.string().optional(),
+  has_open_pull_requests: z.boolean().optional(),
+  total_open: z.number().int().nonnegative().optional(),
+  draft_count: z.number().int().nonnegative().optional(),
+  review_requested_count: z.number().int().nonnegative().optional(),
+  oldest_open_age_days: z.number().nullable().optional(),
+  source: z.string().optional(),
+});
+
+/** Validation schema for repository diagnostics summary. */
+export const DiagnosticsSummarySchema = z.object({
+  availability: z.string().optional(),
+  reason: z.string().optional(),
+  pull_requests: z.unknown().optional(),
+  issues: z.unknown().optional(),
+  security: z.unknown().optional(),
+  actions: z.unknown().optional(),
+  sources: z.array(z.string()).optional(),
 });
 
 /** Validation schema for an individual repository record from the showcase feed. */
@@ -57,6 +123,7 @@ export const RepositoryRecordSchema = z.object({
   name: z.string().min(1),
   description: z.string().nullable().optional(),
   summary: RepositorySummarySchema.optional(),
+  ai_summary: z.string().nullable().optional(),
   url: z.string().url(),
   homepage: optionalUrlSchema,
   has_pages: z.boolean().optional(),
@@ -66,12 +133,24 @@ export const RepositoryRecordSchema = z.object({
   forks: z.number().int().nonnegative(),
   watchers: z.number().int().nonnegative().optional(),
   language: z.string().nullable().optional(),
+  language_count: z.number().int().nonnegative().optional(),
+  language_stats: z.record(z.string(), z.number()).optional(),
+  languages: z.record(z.string(), z.number()).optional(),
   created_at: z.string().min(1),
   updated_at: z.string().min(1),
   pushed_at: z.string().min(1),
+  first_commit_date: z.string().nullable().optional(),
+  last_commit_date: z.string().nullable().optional(),
   total_commits: z.number().int().nonnegative().optional(),
   recent_commits_90d: z.number().int().nonnegative().optional(),
+  commit_velocity: z.number().nonnegative().optional(),
+  avg_commit_size: z.number().nullable().optional(),
+  largest_commit: z.unknown().nullable().optional(),
+  smallest_commit: z.unknown().nullable().optional(),
+  total_additions: z.number().int().nullable().optional(),
+  total_deletions: z.number().int().nullable().optional(),
   commit_history: CommitHistorySummarySchema.optional(),
+  commit_metrics: z.unknown().nullable().optional(),
   has_readme: z.boolean().optional(),
   has_license: z.boolean().optional(),
   has_ci_cd: z.boolean().optional(),
@@ -80,12 +159,24 @@ export const RepositoryRecordSchema = z.object({
   is_fork: z.boolean().optional(),
   is_private: z.boolean().optional(),
   is_archived: z.boolean().optional(),
+  size_kb: z.number().int().nonnegative().optional(),
+  age_days: z.number().int().nonnegative().optional(),
   days_since_last_push: z.number().int().nonnegative().optional(),
-  attention_score: z.number().optional(),
   rank: z.number().optional(),
+  attention_score: z.number().optional(),
+  attention_rank: z.number().int().optional(),
+  attention_metrics: AttentionMetricsSchema.optional(),
   composite_score: z.number().optional(),
-  curated: z.boolean().optional(),
-  is_featured: z.boolean().optional(),
+  bus_factor: z.number().nullable().optional(),
+  bus_factor_health: z.string().nullable().optional(),
+  code_churn: z.number().nullable().optional(),
+  contributor_stats: z.unknown().nullable().optional(),
+  tech_stack: z.unknown().nullable().optional(),
+  screenshot: ScreenshotSchema.optional(),
+  screenshot_audit: z.unknown().optional(),
+  security_summary: SecuritySummarySchema.optional(),
+  pull_request_summary: PullRequestSummarySchema.optional(),
+  diagnostics_summary: DiagnosticsSummarySchema.optional(),
 });
 
 /** Validation schema for the complete repository showcase feed. */
@@ -105,6 +196,16 @@ export type ProfileSummary = z.infer<typeof ProfileSummarySchema>;
 export type RepositorySummary = z.infer<typeof RepositorySummarySchema>;
 /** Type alias for a validated commit history summary payload. */
 export type CommitHistorySummary = z.infer<typeof CommitHistorySummarySchema>;
+/** Type alias for validated attention metrics. */
+export type AttentionMetrics = z.infer<typeof AttentionMetricsSchema>;
+/** Type alias for a validated repository screenshot. */
+export type Screenshot = z.infer<typeof ScreenshotSchema>;
+/** Type alias for a validated security summary. */
+export type SecuritySummary = z.infer<typeof SecuritySummarySchema>;
+/** Type alias for a validated pull request summary. */
+export type PullRequestSummary = z.infer<typeof PullRequestSummarySchema>;
+/** Type alias for a validated diagnostics summary. */
+export type DiagnosticsSummary = z.infer<typeof DiagnosticsSummarySchema>;
 /** Type alias for a validated repository record. */
 export type RepositoryRecord = z.infer<typeof RepositoryRecordSchema>;
 /** Type alias for a validated repository showcase feed. */
@@ -169,7 +270,7 @@ const buildStatusTags = (repo: RepositoryRecord): string[] => {
   if (repo.has_tests) tags.push("tests");
   if (repo.has_ci_cd) tags.push("ci/cd");
   if (repo.has_docs) tags.push("docs");
-  if (repo.curated || repo.is_featured) tags.push("featured");
+  if (repo.attention_metrics?.needs_attention) tags.push("needs-attention");
   return tags;
 };
 
@@ -228,16 +329,10 @@ export const selectFeaturedRepositories = (
   repositories: RepositoryRecord[],
   maxItems = 3
 ): RepositoryCardViewModel[] => {
-  const curated = repositories.filter((repo) => repo.curated || repo.is_featured);
-  const selected =
-    curated.length > 0
-      ? curated.slice(0, maxItems).map((repo) => createRepositoryCardViewModel(repo, "curated"))
-      : [...repositories]
-          .sort((a, b) => getRepositoryScore(b) - getRepositoryScore(a))
-          .slice(0, maxItems)
-          .map((repo) => createRepositoryCardViewModel(repo, "automatic"));
-
-  return selected;
+  return [...repositories]
+    .sort((a, b) => getRepositoryScore(b) - getRepositoryScore(a))
+    .slice(0, maxItems)
+    .map((repo) => createRepositoryCardViewModel(repo, "automatic"));
 };
 
 /**
