@@ -5,18 +5,15 @@ import projectsData from "../data/projects.json";
 import { addCacheBuster } from "../utils/imageUtils";
 import { ProjectData, ProjectDataArraySchema } from "../models/Project";
 import { ZodError } from "zod";
+import { isDevelopmentEnvironment, isCacheFresh } from "../utils/serviceCache";
 
 /**
  * Fetches the projects data with fallback to local file
  * @returns Array of project data
  */
 export const fetchProjectsData = async (): Promise<ProjectData[]> => {
-  // Determine if we're in development mode
-  const isDevelopment =
-    window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-
   // Use proxy in development, direct URL in production
-  const projectsSourceUrl = isDevelopment
+  const projectsSourceUrl = isDevelopmentEnvironment()
     ? "/api/projects" // Use Vite proxy in development
     : "/api/proxy-projects"; // Use Azure Function proxy in production
 
@@ -30,12 +27,8 @@ export const fetchProjectsData = async (): Promise<ProjectData[]> => {
     const cachedVersion = localStorage.getItem("projectsCacheVersion");
     const currentVersion = localStorage.getItem("app_version");
 
-    const cacheAge = lastUpdated ? Date.now() - new Date(lastUpdated).getTime() : Infinity;
-    // Shorter cache in development for faster iteration
-    const maxCacheAge = isDevelopment ? 1000 * 60 * 5 : 1000 * 60 * 60; // 5 minutes in dev, 1 hour in prod
-
-    // Invalidate cache if app version changed
-    const isCacheValid = cachedVersion === currentVersion && cacheAge < maxCacheAge;
+    // Invalidate cache if app version changed or TTL expired (5 min dev / 1 hr prod)
+    const isCacheValid = isCacheFresh(lastUpdated, cachedVersion);
 
     // Use cache if it's fresh and version matches
     if (cachedData && isCacheValid) {

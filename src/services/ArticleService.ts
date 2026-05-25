@@ -2,6 +2,7 @@
  * Service for fetching articles from markhazleton.com/articles.json
  */
 import { z } from "zod";
+import { isDevelopmentEnvironment, isCacheFresh } from "../utils/serviceCache";
 
 const BASE_URL = "https://markhazleton.com";
 
@@ -91,20 +92,16 @@ export type Article = z.infer<typeof ArticleSchema>;
 
 /**
  * Fetches articles from markhazleton.com/articles.json via the appropriate proxy.
- * Results are cached in localStorage for 1 hour.
+ * Results are cached in localStorage (5 min dev / 1 hr prod) and invalidated on app version change.
  */
 export const fetchArticles = async (): Promise<Article[]> => {
-  const isDevelopment =
-    window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-
-  const sourceUrl = isDevelopment ? "/api/articles" : "/api/proxy-articles";
+  const sourceUrl = isDevelopmentEnvironment() ? "/api/articles" : "/api/proxy-articles";
 
   const cachedData = localStorage.getItem("cachedArticlesData");
   const lastUpdated = localStorage.getItem("articlesLastUpdated");
-  const cacheAge = lastUpdated ? Date.now() - new Date(lastUpdated).getTime() : Infinity;
-  const maxCacheAge = 1000 * 60 * 60; // 1 hour
+  const cachedVersion = localStorage.getItem("articlesCacheVersion");
 
-  if (cachedData && cacheAge < maxCacheAge) {
+  if (cachedData && isCacheFresh(lastUpdated, cachedVersion)) {
     return ArticleArraySchema.parse(JSON.parse(cachedData));
   }
 
@@ -130,6 +127,10 @@ export const fetchArticles = async (): Promise<Article[]> => {
       localStorage.setItem("cachedArticlesData", JSON.stringify(articles));
       localStorage.setItem("articlesLastUpdated", new Date().toISOString());
       localStorage.setItem("articlesCount", articles.length.toString());
+      localStorage.setItem(
+        "articlesCacheVersion",
+        localStorage.getItem("app_version") || "unknown"
+      );
     } catch (storageError) {
       console.warn("Failed to cache articles data:", storageError);
     }

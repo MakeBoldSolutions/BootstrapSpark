@@ -6,6 +6,7 @@ import {
   buildShowcaseViewModel,
 } from "../models/Repository";
 import { ZodError } from "zod";
+import { isDevelopmentEnvironment, isCacheFresh } from "../utils/serviceCache";
 
 const CACHE_KEYS = {
   data: "cachedRepositoriesData",
@@ -15,14 +16,8 @@ const CACHE_KEYS = {
   version: "repositoriesCacheVersion",
 } as const;
 
-const isDevelopmentEnvironment = (): boolean =>
-  window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-
 const getRepositorySourceUrl = (): string =>
   isDevelopmentEnvironment() ? "/api/repositories" : "/api/proxy-repositories";
-
-const getMaxCacheAgeMs = (): number =>
-  isDevelopmentEnvironment() ? 1000 * 60 * 5 : 1000 * 60 * 60;
 
 const parseFeed = (candidate: unknown): RepositoryFeed => RepositoryFeedSchema.parse(candidate);
 
@@ -39,14 +34,11 @@ const getStoredFeed = (): RepositoryFeed | null => {
   }
 };
 
-const isFreshCache = (): boolean => {
-  const lastUpdated = localStorage.getItem(CACHE_KEYS.lastUpdated);
-  const cachedVersion = localStorage.getItem(CACHE_KEYS.version);
-  const currentVersion = localStorage.getItem("app_version");
-
-  const cacheAge = lastUpdated ? Date.now() - new Date(lastUpdated).getTime() : Infinity;
-  return cacheAge < getMaxCacheAgeMs() && cachedVersion === currentVersion;
-};
+const isFreshCache = (): boolean =>
+  isCacheFresh(
+    localStorage.getItem(CACHE_KEYS.lastUpdated),
+    localStorage.getItem(CACHE_KEYS.version)
+  );
 
 const cacheFeed = (feed: RepositoryFeed, source: "remote" | "cache" | "local"): void => {
   const currentVersion = localStorage.getItem("app_version") || "unknown";
