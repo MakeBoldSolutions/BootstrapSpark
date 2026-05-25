@@ -58,13 +58,32 @@ module.exports = async function (context, req) {
     }
 
     // Transform image URLs to be absolute URLs pointing to markhazleton.com
+    const toAbsolute = (path) => {
+      if (!path || path.startsWith("http")) return path;
+      const cleaned = path.startsWith("/") ? path.substring(1) : path;
+      return `https://markhazleton.com/${cleaned}`;
+    };
+
     const transformedProjects = response.data.map((project) => {
-      if (project.image && !project.image.startsWith("http")) {
-        // Remove leading slash if present, then add the base URL
-        const imagePath = project.image.startsWith("/")
-          ? project.image.substring(1)
-          : project.image;
-        project.image = `https://markhazleton.com/${imagePath}`;
+      if (project.image) {
+        project.image = toAbsolute(project.image);
+      }
+      if (project.image_metadata) {
+        if (project.image_metadata.thumbnail) {
+          project.image_metadata = {
+            ...project.image_metadata,
+            thumbnail: toAbsolute(project.image_metadata.thumbnail),
+            webp: project.image_metadata.webp
+              ? toAbsolute(project.image_metadata.webp)
+              : project.image_metadata.webp,
+          };
+        }
+      }
+      if (project.og && project.og.image) {
+        project.og = { ...project.og, image: toAbsolute(project.og.image) };
+      }
+      if (project.twitter && project.twitter.image) {
+        project.twitter = { ...project.twitter, image: toAbsolute(project.twitter.image) };
       }
       return project;
     });

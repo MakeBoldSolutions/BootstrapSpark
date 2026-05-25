@@ -10,6 +10,9 @@ const mockProjectsData: ProjectData[] = [
     p: "Test Project 1",
     d: "Description 1",
     h: "https://example.com/project1",
+    slug: "project-1",
+    summary: "Summary for project 1",
+    keywords: "test, project",
   },
   {
     id: 2,
@@ -17,6 +20,9 @@ const mockProjectsData: ProjectData[] = [
     p: "Test Project 2",
     d: "Description 2",
     h: "https://example.com/project2",
+    slug: "project-2",
+    summary: "Summary for project 2",
+    keywords: "test, project",
   },
 ];
 

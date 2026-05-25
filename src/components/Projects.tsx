@@ -15,7 +15,7 @@ type SortOption = "name-asc" | "name-desc" | "id-asc" | "id-desc";
 
 /**
  * Projects component displays a searchable, sortable, and paginated portfolio showcase.
- * 
+ *
  * Features:
  * - Fetches project data with multi-layer caching (remote → cache → local)
  * - Search functionality across project names and descriptions
@@ -23,13 +23,13 @@ type SortOption = "name-asc" | "name-desc" | "id-asc" | "id-desc";
  * - Pagination with 6 projects per page
  * - Cache management with refresh capability
  * - Responsive card-based layout with theme support
- * 
+ *
  * @component
  * @example
  * ```tsx
  * <Projects />
  * ```
- * 
+ *
  * @returns {JSX.Element} The rendered Projects page with portfolio showcase
  */
 function Projects() {
@@ -92,7 +92,8 @@ function Projects() {
     const matchesSearch =
       searchTerm === "" ||
       project.p.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.d.toLowerCase().includes(searchTerm.toLowerCase());
+      project.d.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (project.keywords && project.keywords.toLowerCase().includes(searchTerm.toLowerCase()));
 
     return matchesSearch;
   });
@@ -335,12 +336,19 @@ function Projects() {
                 className={`card h-100 shadow-sm hover-shadow transition ${theme === "dark" ? "bg-dark text-light border-secondary" : ""}`}
               >
                 <img
-                  src={project.image}
+                  src={project.getThumbnailUrl()}
                   className="card-img-top img-project"
                   alt={project.formatTitle()}
                 />
                 <div className="card-body">
                   <h5 className="card-title">{project.formatTitle()}</h5>
+                  {project.category && (
+                    <span
+                      className={`badge mb-2 ${theme === "dark" ? "bg-secondary" : "bg-light text-dark border"}`}
+                    >
+                      {project.category}
+                    </span>
+                  )}
                   <p
                     className={`card-text small ${theme === "dark" ? "text-light-emphasis" : "text-body-secondary"}`}
                   >
@@ -358,9 +366,9 @@ function Projects() {
                   >
                     Visit Site <ArrowRightCircle className="ms-1" />
                   </a>
-                  {project.formatLink().includes("github.com") && (
+                  {project.repository?.url && (
                     <a
-                      href={project.formatLink()}
+                      href={project.repository.url}
                       className={`btn btn-sm ${theme === "dark" ? "btn-outline-light" : "btn-outline-dark"} d-flex align-items-center`}
                       target="_blank"
                       rel="noopener noreferrer"

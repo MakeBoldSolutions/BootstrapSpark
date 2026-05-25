@@ -100,15 +100,28 @@ export const fetchProjectsData = async (): Promise<ProjectData[]> => {
       }
 
       // Transform image URLs before validation
+      const toAbsolute = (path: string): string => {
+        if (!path || path.startsWith("http")) return path;
+        const cleaned = path.startsWith("/") ? path.substring(1) : path;
+        return `https://markhazleton.com/${cleaned}`;
+      };
+
       const transformedProjects = projectsJsonData.map((project) => {
-        // Transform relative image URLs to absolute URLs
-        if (project.image && !project.image.startsWith("http")) {
-          const imagePath = project.image.startsWith("/")
-            ? project.image.substring(1)
-            : project.image;
-          project.image = addCacheBuster(`https://markhazleton.com/${imagePath}`);
-        } else if (project.image && project.image.startsWith("http")) {
-          project.image = addCacheBuster(project.image);
+        // Transform main image URL
+        if (project.image) {
+          project.image = addCacheBuster(toAbsolute(project.image));
+        }
+        // Transform image_metadata thumbnail and webp paths
+        if (project.image_metadata) {
+          if (project.image_metadata.thumbnail) {
+            project.image_metadata = {
+              ...project.image_metadata,
+              thumbnail: toAbsolute(project.image_metadata.thumbnail),
+              webp: project.image_metadata.webp
+                ? toAbsolute(project.image_metadata.webp)
+                : project.image_metadata.webp,
+            };
+          }
         }
         return project;
       });
