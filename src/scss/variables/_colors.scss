@@ -1,110 +1,94 @@
 //
-// Colors
+// Colors — Make Bold Spark brand palette
 //
 @use "sass:map";
 @use "sass:color";
 
+// MBS brand tokens
+$mbs-ink: #040605;
+$mbs-spark: #e94b1b;
+$mbs-ember: #982407;
+$mbs-paper: #f7f4ef;
+$mbs-cream: #eee8df;
+$mbs-smoke: #787878;
+$mbs-steel: #2f3a3d;
+$mbs-mint: #3fbfa8;
+$mbs-gold: #f2b84b;
+$mbs-white: #ffffff;
+
 // Pre-state grayscale colors used in other variables
-$gray-800: #3c4043; // Updated to a neutral dark gray
+$gray-800: $mbs-steel;
 
 // Override Bootstrap color system
-$orange: #e0a458; // Warmer, less saturated orange
+$orange: $mbs-spark;
 
 // Override Bootstrap default state colors
-$primary: #4f6d7a; // Muted teal-blue
-$secondary: #6c757d;
-$success: #57886c; // Muted forest green
-$info: #7a9eb1; // Muted blue
-$warning: #e0a458; // Warmer orange
-$danger: #b05f6d; // Muted red
+$primary: $mbs-spark;
+$secondary: $mbs-steel;
+$success: $mbs-mint;
+$info: $mbs-steel;
+$warning: $mbs-gold;
+$danger: $mbs-ember;
 
 // Custom color palette for light and dark modes
-$white: #ffffff;
+$white: $mbs-white;
 
 $theme-colors: (
-  "light": #fef6e4,
-  // Brighter light background
-  "dark": #1a1a1a,
-  // Deeper dark background
-  "primary": #5c3404,
-  // Muted teal-blue remains
-  "secondary": #8e6139,
-  // Slightly darker secondary
-  "info": #c29748,
-  // Muted gold for info
-  "accent1": #843f1a,
-  // Richer accent color
-  "accent2": #a45e41,
-  // Slightly darker accent
-  "accent3": #d2b18e,
-  // Softer accent
-  "success": #4caf50,
-  // Brighter green for success
-  "warning": #ff9800,
-  // More vibrant orange for warning
-  "danger": #e53935, // Brighter red for danger
+  "light": $mbs-paper,
+  "dark": $mbs-ink,
+  "primary": $mbs-spark,
+  "secondary": $mbs-steel,
+  "info": $mbs-steel,
+  "accent1": $mbs-ember,
+  "accent2": $mbs-smoke,
+  "accent3": $mbs-cream,
+  "success": $mbs-mint,
+  "warning": $mbs-gold,
+  "danger": $mbs-ember,
 );
 
 // Define the light theme map with all necessary variables
 $light-theme: (
-  "background": map.get($theme-colors, "light"),
-  // light background
-  "background-alt": color.adjust(map.get($theme-colors, "light"), $lightness: 3%),
-  // lighter background alternate
-  "foreground": map.get($theme-colors, "dark"),
-  // dark text for readability
-  "foreground-alt": color.adjust(map.get($theme-colors, "dark"), $lightness: 10%),
-  // lighter foreground alternate
-  "foreground-muted": color.adjust(map.get($theme-colors, "dark"), $lightness: 30%),
-  // muted foreground for secondary text
-  "border": rgba(0, 0, 0, 0.125),
-  // standard border color
-  "border-light": rgba(0, 0, 0, 0.05),
-  // lighter border color
-  "card-bg": #ffffff,
-  // card background
-  "accent": map.get($theme-colors, "accent1"),
-  // main accent color
-  "primary": map.get($theme-colors, "primary"),
-  "secondary": map.get($theme-colors, "secondary"),
-  "info": map.get($theme-colors, "info"),
-  "accent1": map.get($theme-colors, "accent1"),
-  "accent2": map.get($theme-colors, "accent2"),
-  "accent3": map.get($theme-colors, "accent3"),
-  "success": map.get($theme-colors, "success"),
-  "warning": map.get($theme-colors, "warning"),
-  "danger": map.get($theme-colors, "danger"),
+  "background": $mbs-paper,
+  "background-alt": $mbs-cream,
+  "foreground": $mbs-ink,
+  "foreground-alt": $mbs-steel,
+  "foreground-muted": $mbs-smoke,
+  "border": rgba(4, 6, 5, 0.14),
+  "border-light": rgba(4, 6, 5, 0.06),
+  "card-bg": $mbs-white,
+  "accent": $mbs-spark,
+  "primary": $mbs-spark,
+  "secondary": $mbs-steel,
+  "info": $mbs-steel,
+  "accent1": $mbs-ember,
+  "accent2": $mbs-smoke,
+  "accent3": $mbs-cream,
+  "success": $mbs-mint,
+  "warning": $mbs-gold,
+  "danger": $mbs-ember,
 );
 
 // Define the dark theme map with all necessary variables
 $dark-theme: (
-  "background": map.get($theme-colors, "dark"),
-  // dark background
-  "background-alt": color.adjust(map.get($theme-colors, "dark"), $lightness: 5%),
-  // slightly lighter background alternate
-  "foreground": $white,
-  // light text using $white
-  "foreground-alt": color.adjust($white, $lightness: -10%),
-  // slightly darker foreground alternate
-  "foreground-muted": color.adjust($white, $lightness: -30%),
-  // muted foreground for secondary text
-  "border": rgba(255, 255, 255, 0.125),
-  // standard border color
-  "border-light": rgba(255, 255, 255, 0.05),
-  // lighter border color
-  "card-bg": color.adjust(map.get($theme-colors, "dark"), $lightness: 8%),
-  // card background
-  "accent": map.get($theme-colors, "accent1"),
-  // main accent color
-  "primary": map.get($theme-colors, "primary"),
-  "secondary": map.get($theme-colors, "secondary"),
-  "info": map.get($theme-colors, "info"),
-  "accent1": map.get($theme-colors, "accent1"),
-  "accent2": map.get($theme-colors, "accent2"),
-  "accent3": map.get($theme-colors, "accent3"),
-  "success": map.get($theme-colors, "success"),
-  "warning": map.get($theme-colors, "warning"),
-  "danger": map.get($theme-colors, "danger"),
+  "background": $mbs-ink,
+  "background-alt": $mbs-steel,
+  "foreground": $mbs-white,
+  "foreground-alt": rgba(255, 255, 255, 0.78),
+  "foreground-muted": $mbs-smoke,
+  "border": rgba(247, 244, 239, 0.18),
+  "border-light": rgba(247, 244, 239, 0.08),
+  "card-bg": $mbs-steel,
+  "accent": $mbs-spark,
+  "primary": $mbs-spark,
+  "secondary": $mbs-smoke,
+  "info": $mbs-smoke,
+  "accent1": $mbs-ember,
+  "accent2": $mbs-smoke,
+  "accent3": $mbs-steel,
+  "success": $mbs-mint,
+  "warning": $mbs-gold,
+  "danger": $mbs-ember,
 );
 
 // Theme switching functions
@@ -129,6 +113,22 @@ $dark-theme: (
 
 // CSS variable definitions for theme colors
 :root {
+  // Make Bold Spark brand tokens
+  --mbs-ink: #{$mbs-ink};
+  --mbs-spark: #{$mbs-spark};
+  --mbs-ember: #{$mbs-ember};
+  --mbs-paper: #{$mbs-paper};
+  --mbs-cream: #{$mbs-cream};
+  --mbs-smoke: #{$mbs-smoke};
+  --mbs-steel: #{$mbs-steel};
+  --mbs-mint: #{$mbs-mint};
+  --mbs-gold: #{$mbs-gold};
+  --mbs-white: #{$mbs-white};
+  --mbs-line: rgba(4, 6, 5, 0.14);
+  --mbs-line-dark: rgba(247, 244, 239, 0.18);
+  --mbs-shadow: 0 18px 48px rgba(4, 6, 5, 0.14);
+  --mbs-radius: 8px;
+
   // Base Bootstrap colors as CSS variables
   --bs-primary: #{$primary};
   --bs-secondary: #{$secondary};

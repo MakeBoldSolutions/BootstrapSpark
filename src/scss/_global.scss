@@ -4,11 +4,28 @@
 @use "./variables/colors" as colors;
 @use "./variables/spacing" as spacing;
 
+// Make Bold Spark — Inter Tight font faces
+@font-face {
+  font-display: swap;
+  font-family: "Inter Tight";
+  font-style: normal;
+  font-weight: 100 900;
+  src: url("/assets/fonts/inter-tight.ttf") format("truetype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Inter Tight";
+  font-style: italic;
+  font-weight: 100 900;
+  src: url("/assets/fonts/inter-tight-italic.ttf") format("truetype");
+}
+
 // Note: Bootstrap mixins and variables are available from the main styles.scss @import
 
 body {
   padding-top: spacing.$navbar-base-height;
-  color: colors.$gray-800;
+  color: colors.$mbs-ink;
   padding-bottom: 60px; /* Height of the footer */
   @include colors.theme-aware(background-color, "background");
 }

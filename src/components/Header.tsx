@@ -48,8 +48,7 @@ const Header: React.FC = () => {
 
   const isThemesActive = location.pathname === "/themes";
 
-  // Updated path resolution for the logo to work both locally and on Azure
-  const logoPath = "/PromptSpark.svg";
+  const logoPath = "/assets/logo/makeboldspark-mark.svg";
 
   return (
     <>
@@ -62,7 +61,7 @@ const Header: React.FC = () => {
       >
         <div className="container">
           <Link className="navbar-brand d-flex align-items-center" to="/">
-            <img src={logoPath} alt="BootstrapSpark Logo" width="24" height="24" className="me-2" />
+            <img src={logoPath} alt="Make Bold Spark" width="24" height="24" className="me-2" />
             <div>
               <span className="fw-bold">BootstrapSpark</span>
               <small className="d-block text-muted header-subtitle">by Mark Hazleton</small>
