@@ -1,4 +1,4 @@
-version: 2.4.0
-installed: 2026-05-24
-method: copilot-agent-upgrade
-migrated-from: 2.2.1
+version: 2.6.0
+installed: 2026-06-21
+method: copilot-quickstart
+migrated-from: fresh
