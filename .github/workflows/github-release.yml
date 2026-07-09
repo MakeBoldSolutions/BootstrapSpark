@@ -36,10 +36,10 @@ jobs:
         run: |
           set -euo pipefail
           TAG_NAME="${GITHUB_REF_NAME}"
-          RELEASE_DIR=".documentation/releases/${TAG_NAME}"
+          RELEASE_DIR="bold-docs/system/releases/${TAG_NAME}"
           RELEASE_NOTES="${RELEASE_DIR}/release-notes.md"
           if [ ! -d "${RELEASE_DIR}" ]; then
-            echo "Expected release directory ${RELEASE_DIR} was not found. Run /devspark.release and commit the generated release docs before pushing tag ${TAG_NAME}." >&2
+            echo "Expected release directory ${RELEASE_DIR} was not found. Generate the release notes and commit them before pushing tag ${TAG_NAME}." >&2
             exit 1
           fi
           if [ ! -f "${RELEASE_NOTES}" ]; then
@@ -62,8 +62,8 @@ jobs:
           cp -R docs/. "${BUNDLE_ROOT}/site/"
           cp -R "${RELEASE_DIR}/." "${BUNDLE_ROOT}/release-docs/"
           cp CHANGELOG.md "${BUNDLE_ROOT}/CHANGELOG.md"
-          if [ -f ".documentation/CHANGELOG.md" ]; then
-            cp ".documentation/CHANGELOG.md" "${BUNDLE_ROOT}/documentation-CHANGELOG.md"
+          if [ -f "bold-docs/system/CHANGELOG.md" ]; then
+            cp "bold-docs/system/CHANGELOG.md" "${BUNDLE_ROOT}/documentation-CHANGELOG.md"
           fi
           if [ -f "staticwebapp.config.json" ]; then
             cp "staticwebapp.config.json" "${BUNDLE_ROOT}/staticwebapp.config.json"

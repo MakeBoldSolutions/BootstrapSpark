@@ -252,12 +252,12 @@ npm run dev
 
 Release documentation and GitHub Releases are intentionally connected.
 
-1. Run `/devspark.release` to generate `.documentation/releases/vX.Y.Z/` and the associated changelog updates.
+1. Generate release notes and changelog updates for the new version under `bold-docs/system/releases/vX.Y.Z/`.
 2. Commit the generated release artifacts.
 3. Push the release commit to `main`.
 4. Create and push the matching tag, for example `v2.1.0`.
 
-When the tag is pushed, GitHub Actions publishes a GitHub Release whose body comes from `.documentation/releases/vX.Y.Z/release-notes.md` and uploads a packaged build artifact plus checksum.
+When the tag is pushed, GitHub Actions publishes a GitHub Release whose body comes from `bold-docs/system/releases/vX.Y.Z/release-notes.md` and uploads a packaged build artifact plus checksum.
 
 ### 🔒 Code Quality
 
