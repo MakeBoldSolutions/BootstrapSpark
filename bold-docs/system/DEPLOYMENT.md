@@ -171,16 +171,16 @@ jobs:
 - ❌ No server-side features
 - ❌ Limited custom domain features
 
-### 2.1 GitHub Releases From DevSpark
+### 2.1 GitHub Releases (tag-driven)
 
-The repository now supports a tag-driven GitHub Release flow that complements `/devspark.release`.
+The repository supports a tag-driven GitHub Release flow. Migrated off DevSpark onto Bold (2026-07-09) — Bold has no dedicated release command yet, so the release notes step below is currently manual (write them by hand, or ask your agent to draft them).
 
 Release contract:
 
-1. Run `/devspark.release` and commit the generated release documentation.
+1. Write release notes at `bold-docs/system/releases/vX.Y.Z/release-notes.md` and commit them.
 2. Create a semantic version tag that matches the release folder name, for example `v2.1.0`.
 3. Push both the commit and the tag.
-4. GitHub Actions builds the site, packages the built `docs/` output together with `.documentation/releases/vX.Y.Z/`, and publishes a GitHub Release automatically.
+4. GitHub Actions builds the site, packages the built `docs/` output together with `bold-docs/system/releases/vX.Y.Z/`, and publishes a GitHub Release automatically.
 
 Example:
 
@@ -194,11 +194,11 @@ git push origin v2.1.0
 
 The resulting GitHub Release includes:
 
-- A release body sourced from `.documentation/releases/vX.Y.Z/release-notes.md`
+- A release body sourced from `bold-docs/system/releases/vX.Y.Z/release-notes.md`
 - A zip bundle containing the production site and release documentation
 - A SHA-256 checksum for the bundle
 
-The workflow will fail if the pushed tag does not have matching release documentation committed in `.documentation/releases/vX.Y.Z/`.
+The workflow will fail if the pushed tag does not have matching release documentation committed in `bold-docs/system/releases/vX.Y.Z/`.
 
 ### 3. Netlify
 
