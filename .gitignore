@@ -80,9 +80,9 @@ cypress/screenshots/
 Thumbs.db
 ehthumbs.db
 
-# DevSpark — personal overrides (never commit)
-.documentation/*/commands/
-
 # Claude Code — ignore personal settings, keep command shims
 .claude/*
 !.claude/commands/
+
+# Bold — local-only recovery scratch, not meant to be committed
+.bold/.backup/

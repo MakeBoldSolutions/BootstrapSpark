@@ -1,0 +1,19 @@
+{
+  "core": {
+    "language": { "value": "typescript", "source": "discovered" },
+    "framework": { "value": "react", "source": "discovered" },
+    "build_tool": { "value": "vite", "source": "discovered" },
+    "package_manager": { "value": "npm", "source": "discovered" },
+    "test_framework": { "value": "vitest", "source": "discovered" },
+    "css": { "value": "sass", "source": "discovered" }
+  },
+  "layer": {
+    "react": {
+      "router": { "value": "react-router", "source": "discovered" },
+      "state": { "value": "context", "source": "discovered" }
+    },
+    "bootstrap": {
+      "version": { "value": "5", "source": "discovered" }
+    }
+  }
+}
