@@ -6,7 +6,8 @@
   "http://127.0.0.1:3000",
 ];
 
-const REPOSITORY_SOURCE_URL = "https://markhazleton.com/repositories.json";
+const REPOSITORY_SOURCE_URL =
+  "https://raw.githubusercontent.com/MakeBoldSolutions/github-stats-spark/refs/heads/main/data/users/makeboldsolutions/repositories.json";
 
 module.exports = async function (context, req) {
   context.log("Processing repositories proxy request");

@@ -159,9 +159,13 @@ export default defineConfig({
         },
       },
       "/api/repositories": {
-        target: "https://markhazleton.com",
+        target: "https://raw.githubusercontent.com",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/repositories/, "/repositories.json"),
+        rewrite: (path) =>
+          path.replace(
+            /^\/api\/repositories/,
+            "/MakeBoldSolutions/github-stats-spark/refs/heads/main/data/users/makeboldsolutions/repositories.json"
+          ),
         secure: true,
         configure: (proxy) => {
           proxy.on("error", (err) => {

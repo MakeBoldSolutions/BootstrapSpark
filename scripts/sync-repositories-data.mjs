@@ -4,7 +4,9 @@ import path from "node:path";
 const workspaceRoot = process.cwd();
 const outputPath = path.join(workspaceRoot, ".build", "data", "repositories.json");
 const embeddedFeedPath = path.join(workspaceRoot, "src", "data", "repositories.json");
-const sourceUrl = process.env.REPOSITORIES_FEED_URL || "https://markhazleton.com/repositories.json";
+const sourceUrl =
+  process.env.REPOSITORIES_FEED_URL ||
+  "https://raw.githubusercontent.com/MakeBoldSolutions/github-stats-spark/refs/heads/main/data/users/makeboldsolutions/repositories.json";
 
 const isValidFeed = (payload) => {
   if (!payload || typeof payload !== "object") {
