@@ -106,7 +106,7 @@ export class VersionManager {
     return window.confirm(message);
   }
 
-  static forceRefresh(): void {
+  static forceRefresh(reloadPage: () => void = () => window.location.reload()): void {
     // Clear all caches and reload
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.getRegistrations().then((registrations) => {
@@ -140,7 +140,7 @@ export class VersionManager {
     localStorage.removeItem("rssSource");
 
     // Force hard reload with cache bypass
-    window.location.reload();
+    reloadPage();
   }
 
   static updateVersion(): void {

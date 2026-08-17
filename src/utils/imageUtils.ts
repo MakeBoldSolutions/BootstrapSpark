@@ -62,8 +62,9 @@ export const forceImageRefresh = (imageUrl: string): string => {
 /**
  * Development helper: Clear all localStorage caches and force page reload
  * This function is available globally in development mode
+ * @param reloadPage Callback used to reload the page after caches are cleared
  */
-export const clearAllCaches = (): void => {
+export const clearAllCaches = (reloadPage: () => void = () => window.location.reload()): void => {
   if (!isDevelopment) {
     console.warn("Cache clearing is only available in development mode");
     return;
@@ -89,7 +90,7 @@ export const clearAllCaches = (): void => {
   }
 
   console.log("All caches cleared. Page will reload...");
-  window.location.reload();
+  reloadPage();
 };
 
 // Make cache clearing available globally in development

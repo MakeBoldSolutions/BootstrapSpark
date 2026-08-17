@@ -93,7 +93,7 @@ describe("VersionManager", () => {
     it("should return false when check interval has not passed", async () => {
       const now = Date.now().toString();
       localStorage.setItem("last_version_check", now);
-      
+
       const currentVersion = VersionManager.getCurrentVersion();
       VersionManager.setStoredVersion(currentVersion);
 
@@ -111,7 +111,7 @@ describe("VersionManager", () => {
       const consoleWarnSpy = vi.spyOn(console, "warn");
 
       const hasUpdate = await VersionManager.checkForUpdates();
-      
+
       expect(hasUpdate).toBe(false);
       expect(consoleWarnSpy).toHaveBeenCalled();
     });
@@ -119,7 +119,7 @@ describe("VersionManager", () => {
     it("should detect version change via ETag", async () => {
       // Force check
       localStorage.removeItem("last_version_check");
-      
+
       // Store old ETag
       localStorage.setItem("app_etag", "old-etag");
 
@@ -132,7 +132,7 @@ describe("VersionManager", () => {
       } as Response);
 
       const hasUpdate = await VersionManager.checkForUpdates();
-      
+
       expect(hasUpdate).toBe(true);
       expect(localStorage.getItem("app_etag")).toBe("new-etag");
     });
@@ -140,7 +140,7 @@ describe("VersionManager", () => {
     it("should detect version change via Last-Modified", async () => {
       // Force check
       localStorage.removeItem("last_version_check");
-      
+
       // Store old Last-Modified
       localStorage.setItem("app_last_modified", "Wed, 01 Jan 2020 00:00:00 GMT");
 
@@ -153,7 +153,7 @@ describe("VersionManager", () => {
       } as Response);
 
       const hasUpdate = await VersionManager.checkForUpdates();
-      
+
       expect(hasUpdate).toBe(true);
     });
 
@@ -170,7 +170,7 @@ describe("VersionManager", () => {
       const before = Date.now();
       await VersionManager.checkForUpdates();
       const timestamp = parseInt(localStorage.getItem("last_version_check") || "0", 10);
-      
+
       expect(timestamp).toBeGreaterThanOrEqual(before);
     });
   });
@@ -178,18 +178,18 @@ describe("VersionManager", () => {
   describe("promptForUpdate", () => {
     it("should show confirmation dialog", () => {
       const confirmSpy = vi.spyOn(window, "confirm").mockReturnValue(true);
-      
+
       const result = VersionManager.promptForUpdate();
-      
+
       expect(confirmSpy).toHaveBeenCalled();
       expect(result).toBe(true);
     });
 
     it("should return false if user cancels", () => {
       vi.spyOn(window, "confirm").mockReturnValue(false);
-      
+
       const result = VersionManager.promptForUpdate();
-      
+
       expect(result).toBe(false);
     });
   });
@@ -210,31 +210,32 @@ describe("VersionManager", () => {
       localStorage.setItem("rssArticleCount", "5");
       localStorage.setItem("rssSource", "remote");
       localStorage.setItem("other_key", "value"); // Should not be cleared
-      
-      // Since window.location.reload is not configurable in jsdom, we'll test the cache clearing
-      VersionManager.forceRefresh();
+
+      const reloadPage = vi.fn();
+      VersionManager.forceRefresh(reloadPage);
 
       // Version-related keys should be cleared
       expect(localStorage.getItem("app_version")).toBeNull();
       expect(localStorage.getItem("last_version_check")).toBeNull();
       expect(localStorage.getItem("app_etag")).toBeNull();
       expect(localStorage.getItem("app_last_modified")).toBeNull();
-      
+
       // Project cache keys should be cleared
       expect(localStorage.getItem("cachedProjectsData")).toBeNull();
       expect(localStorage.getItem("projectsLastUpdated")).toBeNull();
       expect(localStorage.getItem("projectsCount")).toBeNull();
       expect(localStorage.getItem("projectsSource")).toBeNull();
-      
+
       // RSS cache keys should be cleared
       expect(localStorage.getItem("cachedRssData")).toBeNull();
       expect(localStorage.getItem("rssLastUpdated")).toBeNull();
       expect(localStorage.getItem("rssArticleCount")).toBeNull();
       expect(localStorage.getItem("rssSource")).toBeNull();
-      
+
       // Other keys should remain
       expect(localStorage.getItem("other_key")).toBe("value");
-      
+      expect(reloadPage).toHaveBeenCalledOnce();
+
       // Clean up
       localStorage.clear();
     });

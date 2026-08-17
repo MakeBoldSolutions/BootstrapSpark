@@ -94,16 +94,16 @@ describe("imageUtils", () => {
 
     it("should clear localStorage in development mode", () => {
       localStorage.setItem("test", "value");
-      
+
       // Mock console.log to suppress output
       const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-      
-      // Since window.location.reload is not configurable in jsdom, we'll test up to that point
-      // The function will attempt to reload, but we can't verify it in the test environment
-      clearAllCaches();
+
+      const reloadPage = vi.fn();
+      clearAllCaches(reloadPage);
 
       expect(localStorage.getItem("test")).toBeNull();
-      
+      expect(reloadPage).toHaveBeenCalledOnce();
+
       consoleLogSpy.mockRestore();
     });
   });
