@@ -4,6 +4,7 @@ import path from "node:path";
 const workspaceRoot = process.cwd();
 const outputPath = path.join(workspaceRoot, ".build", "data", "repositories.json");
 const embeddedFeedPath = path.join(workspaceRoot, "src", "data", "repositories.json");
+const localOnly = process.argv.includes("--local");
 const sourceUrl =
   process.env.REPOSITORIES_FEED_URL ||
   "https://raw.githubusercontent.com/MakeBoldSolutions/github-stats-spark/refs/heads/main/data/users/makeboldsolutions/repositories.json";
@@ -48,6 +49,16 @@ const writeFeed = (payload, sourceDescription) => {
 };
 
 const run = async () => {
+  if (localOnly) {
+    const embeddedFeed = readFeedFromFile(embeddedFeedPath);
+    if (!embeddedFeed) {
+      throw new Error(`Embedded repositories feed not found at ${embeddedFeedPath}`);
+    }
+
+    writeFeed(embeddedFeed, "embedded fallback");
+    return;
+  }
+
   console.log(`Syncing repositories data from ${sourceUrl}`);
 
   try {
@@ -59,13 +70,17 @@ const run = async () => {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch repositories feed: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `Failed to fetch repositories feed: ${response.status} ${response.statusText}`
+      );
     }
 
     const payload = await response.json();
 
     if (!isValidFeed(payload)) {
-      throw new Error("Fetched repositories feed is missing required profile/repositories/metadata shape.");
+      throw new Error(
+        "Fetched repositories feed is missing required profile/repositories/metadata shape."
+      );
     }
 
     writeFeed(payload, "fresh");

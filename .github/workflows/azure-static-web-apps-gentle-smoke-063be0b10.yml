@@ -22,18 +22,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "26"
           cache: "npm"
+      - name: Setup npm
+        run: npm install -g npm@12.0.2
       - name: Install dependencies
         run: npm ci
-      - name: Lint
-        run: npm run lint
-      - name: Type Check
-        run: npm run type-check
-      - name: Test Coverage
-        run: npm run test:coverage
-      - name: Build
-        run: npm run build
+      - name: CI build
+        run: npm run build:ci
 
   build_and_deploy_job:
     if: github.event_name == 'push'
@@ -50,16 +46,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "26"
           cache: "npm"
+      - name: Setup npm
+        run: npm install -g npm@12.0.2
       - name: Install dependencies
         run: npm ci
-      - name: Lint
-        run: npm run lint
-      - name: Type Check
-        run: npm run type-check
-      - name: Test Coverage
-        run: npm run test:coverage
+      - name: CI build
+        run: npm run build:ci
       - name: Install OIDC Client from Core Package
         run: npm install @actions/core@1.6.0 @actions/http-client
       - name: Get Id Token
@@ -78,11 +72,10 @@ jobs:
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/" # App source code path
+          app_location: "docs" # Prebuilt static app artifact
           api_location: "api" # Api source code path - optional
-          output_location: "docs" # Built app content directory - updated to match Vite's output
-          app_build_command: "npm run build" # Custom build command
-          skip_app_build: false
+          output_location: "" # App build already produced docs
+          skip_app_build: true
           skip_api_build: false
           github_id_token: ${{ steps.idtoken.outputs.result }}
           ###### End of Repository/Build Configurations ######

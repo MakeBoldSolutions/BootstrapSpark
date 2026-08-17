@@ -4,6 +4,7 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 import fs from "fs";
 import path from "path";
 import strip from "@rollup/plugin-strip";
+import type { LogOrStringHandler, RollupLog } from "rollup";
 
 // Get the current date-time during the build
 const buildDate = new Date().toISOString();
@@ -18,6 +19,21 @@ const createNoJekyllFile = () => {
   };
 };
 
+const suppressKnownThirdPartyWarnings = (
+  warning: RollupLog,
+  defaultHandler: LogOrStringHandler
+) => {
+  const warningId = warning.id ?? "";
+  if (
+    warning.code === "INVALID_ANNOTATION" &&
+    warningId.includes("@microsoft/signalr/dist/esm/Utils.js")
+  ) {
+    return;
+  }
+
+  defaultHandler(warning);
+};
+
 export default defineConfig({
   // Set base path explicitly to "/" for Azure Static Web Apps
   // This ensures assets are served from the correct location
@@ -25,6 +41,7 @@ export default defineConfig({
   build: {
     outDir: "docs",
     rollupOptions: {
+      onwarn: suppressKnownThirdPartyWarnings,
       output: {
         // Add hash to all file names for cache busting
         entryFileNames: "assets/[name]-[hash].js",

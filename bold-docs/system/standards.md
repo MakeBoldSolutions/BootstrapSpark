@@ -4,7 +4,7 @@
 
 ## Performance
 
-- Bundle size should be monitored and optimized
+- Bundle size should be monitored with `npm run build:analyze`, which writes `reports/bundle-analysis.html`
 - Code splitting should be used for route-based lazy loading
 - Images must use the cache-busting strategy in `imageUtils.ts`
 - Asset optimization should be automated in the build pipeline
@@ -17,9 +17,11 @@
 
 ## Deployment
 
-- Dual deployment: Azure Static Web Apps (primary), GitHub Pages (secondary/fallback)
-- Build output directory must be `/docs` — single publish folder for both targets (Vite `outDir: "docs"`, Azure SWA `output_location: "docs"`, GitHub Pages served from `/docs` on `main`)
-- A `.nojekyll` file is written to `docs/` during build to disable Jekyll processing on GitHub Pages
+- Azure Static Web Apps is the primary deployment target
+- Build output directory must be `/docs` — Vite `outDir: "docs"` writes the static artifact, and Azure Static Web Apps uploads that prebuilt directory
+- CI and deployment use Node.js `>=26.0.0` and npm `12.0.2`
+- `npm run build` and `npm run build:deploy` must not refresh remote data; use `npm run sync:data` explicitly when remote-backed snapshots should be refreshed
+- A `.nojekyll` file is written to `docs/` during build
 - `npm run clean` removes `/docs` before each build — never commit build artifacts to `/docs` manually
 - CSP configuration must be synchronized across environments
 - Version tracking via `__BUILD_DATE__` injection; service worker clears on version changes
