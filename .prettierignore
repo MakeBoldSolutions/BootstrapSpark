@@ -10,6 +10,7 @@ package-lock.json
 pnpm-lock.yaml
 yarn.lock
 .documentation
+.archive
 .github
 
 # Generated files

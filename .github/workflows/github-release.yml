@@ -21,14 +21,17 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 26
           cache: npm
+
+      - name: Set up npm
+        run: npm install -g npm@12.0.2
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build production site
-        run: npm run build
+        run: npm run build:deploy
 
       - name: Resolve release metadata
         id: release_meta
