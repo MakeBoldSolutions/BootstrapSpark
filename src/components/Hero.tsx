@@ -79,7 +79,7 @@ const Hero: React.FC<{ profileData?: Profile }> = ({ profileData }) => {
                     {profile.ctaText} <ArrowRightCircle className="ms-2" />
                   </a>
                   <a
-                    href="https://github.com/markhazleton/BootstrapSpark"
+                    href="https://github.com/MakeBoldSolutions/BootstrapSpark"
                     className="btn btn-outline-light d-inline-flex align-items-center border-2"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -238,7 +238,7 @@ const Hero: React.FC<{ profileData?: Profile }> = ({ profileData }) => {
                   </a>
 
                   <a
-                    href="https://github.com/markhazleton/BootstrapSpark"
+                    href="https://github.com/MakeBoldSolutions/BootstrapSpark"
                     className="btn btn-sm btn-outline-secondary d-inline-flex align-items-center"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -413,7 +413,7 @@ const Hero: React.FC<{ profileData?: Profile }> = ({ profileData }) => {
                     <JournalText className="me-1" /> Learn About WebSpark
                   </a>
                   <a
-                    href="https://github.com/markhazleton/BootstrapSpark"
+                    href="https://github.com/MakeBoldSolutions/BootstrapSpark"
                     className="btn btn-outline-secondary d-inline-flex align-items-center"
                     target="_blank"
                     rel="noopener noreferrer"

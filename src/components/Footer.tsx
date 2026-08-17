@@ -103,7 +103,7 @@ const Footer: React.FC = () => {
         {/* GitHub Repo Link */}
         <div className="col-md-4 text-md-end text-center">
           <a
-            href="https://github.com/markhazleton/BootstrapSpark"
+            href="https://github.com/MakeBoldSolutions/BootstrapSpark"
             className="btn btn-sm btn-outline-secondary d-inline-flex align-items-center"
             target="_blank"
             rel="noopener noreferrer"

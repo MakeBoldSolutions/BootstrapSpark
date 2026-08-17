@@ -26,7 +26,7 @@ export const AppConfig = {
   /**
    * Github repository URL
    */
-  githubRepo: "https://github.com/markhazleton/BootstrapSpark",
+  githubRepo: "https://github.com/MakeBoldSolutions/BootstrapSpark",
 };
 
 export default AppConfig;

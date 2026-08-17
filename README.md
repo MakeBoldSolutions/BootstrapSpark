@@ -4,16 +4,16 @@
 
 **Live Site**: [Bootstrap.makeboldspark.com](https://Bootstrap.makeboldspark.com)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/markhazleton/BootstrapSpark?tab=MIT-1-ov-file)
-[![GitHub stars](https://img.shields.io/github/stars/markhazleton/BootstrapSpark)](https://github.com/markhazleton/BootstrapSpark/stargazers)
-[![GitHub issues](https://img.shields.io/github/issues/markhazleton/BootstrapSpark)](https://github.com/markhazleton/BootstrapSpark/issues)
-[![Azure Static Web Apps CI/CD](https://github.com/markhazleton/BootstrapSpark/workflows/Azure%20Static%20Web%20Apps%20CI/CD/badge.svg)](https://github.com/markhazleton/BootstrapSpark/actions)
-[![GitHub forks](https://img.shields.io/github/forks/markhazleton/BootstrapSpark)](https://github.com/markhazleton/BootstrapSpark/network)
-[![Last Commit](https://img.shields.io/github/last-commit/markhazleton/BootstrapSpark)](https://github.com/markhazleton/BootstrapSpark/commits)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/MakeBoldSolutions/BootstrapSpark?tab=MIT-1-ov-file)
+[![GitHub stars](https://img.shields.io/github/stars/MakeBoldSolutions/BootstrapSpark)](https://github.com/MakeBoldSolutions/BootstrapSpark/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/MakeBoldSolutions/BootstrapSpark)](https://github.com/MakeBoldSolutions/BootstrapSpark/issues)
+[![Azure Static Web Apps CI/CD](https://github.com/MakeBoldSolutions/BootstrapSpark/workflows/Azure%20Static%20Web%20Apps%20CI/CD/badge.svg)](https://github.com/MakeBoldSolutions/BootstrapSpark/actions)
+[![GitHub forks](https://img.shields.io/github/forks/MakeBoldSolutions/BootstrapSpark)](https://github.com/MakeBoldSolutions/BootstrapSpark/network)
+[![Last Commit](https://img.shields.io/github/last-commit/MakeBoldSolutions/BootstrapSpark)](https://github.com/MakeBoldSolutions/BootstrapSpark/commits)
 
 **🚀 A modern, high-performance React portfolio showcasing enterprise-grade web development**
 
-[🌐 Live Demo](https://Bootstrap.makeboldspark.com) • [📖 Documentation](./.documentation/) • [ Report Bug](https://github.com/markhazleton/BootstrapSpark/issues)
+[🌐 Live Demo](https://Bootstrap.makeboldspark.com) • [📖 Documentation](./.documentation/) • [ Report Bug](https://github.com/MakeBoldSolutions/BootstrapSpark/issues)
 
 </div>
 
@@ -217,7 +217,7 @@ BootstrapSpark/
 
 ```bash
 # Clone the repository
-git clone https://github.com/markhazleton/BootstrapSpark.git
+git clone https://github.com/MakeBoldSolutions/BootstrapSpark.git
 cd BootstrapSpark
 
 # Install dependencies
@@ -390,7 +390,7 @@ We welcome contributions! Please see our [Contributing Guide](./.documentation/C
 
 ## 🆘 Support
 
-- � **Issues:** [GitHub Issues](https://github.com/markhazleton/BootstrapSpark/issues)
+- � **Issues:** [GitHub Issues](https://github.com/MakeBoldSolutions/BootstrapSpark/issues)
 - 🐛 **Bug Reports:** Use the bug report template
 - ✨ **Feature Requests:** Use the feature request template
 
@@ -421,7 +421,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 [![Follow on GitHub](https://img.shields.io/github/followers/markhazleton?style=social)](https://github.com/markhazleton)
 [![Twitter Follow](https://img.shields.io/twitter/follow/markhazleton?style=social)](https://twitter.com/markhazleton)
 
-[⭐ Star this repo](https://github.com/markhazleton/BootstrapSpark) if you find it helpful!
+[⭐ Star this repo](https://github.com/MakeBoldSolutions/BootstrapSpark) if you find it helpful!
 
 </div>
 
@@ -494,7 +494,7 @@ BootstrapSpark/
 
 ```pwsh
 # Clone the repository
-git clone https://github.com/markhazleton/BootstrapSpark.git
+git clone https://github.com/MakeBoldSolutions/BootstrapSpark.git
 cd BootstrapSpark
 
 # Install dependencies
@@ -578,7 +578,7 @@ npm audit
 npm audit --json
 
 # Check GitHub Security tab
-# https://github.com/markhazleton/BootstrapSpark/security
+# https://github.com/MakeBoldSolutions/BootstrapSpark/security
 ```
 
 **Note**: All scripts and documentation prioritize security fixes and provide clear guidance for safe dependency updates.
@@ -659,7 +659,7 @@ npm audit --json
 
 Contributions are welcome!
 
-- **Issues**: Use [GitHub Issues](https://github.com/markhazleton/BootstrapSpark/issues)
+- **Issues**: Use [GitHub Issues](https://github.com/MakeBoldSolutions/BootstrapSpark/issues)
 - **Pull Requests**: Fork, branch, and submit PRs
 - **Code Style**: Follow existing TypeScript/React patterns and lint rules
 - **Templates**: See `.github/ISSUE_TEMPLATE/` for bug/feature templates
@@ -697,10 +697,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support & Contact
 
-- **Issues**: [GitHub Issues](https://github.com/markhazleton/BootstrapSpark/issues)
+- **Issues**: [GitHub Issues](https://github.com/MakeBoldSolutions/BootstrapSpark/issues)
 - **Pull Requests**: Welcome!
 - **General Questions**: Please use GitHub Issues for all support and contact
 
 ---
 
-Built with ❤️ by the BootstrapSpark community. [Report an issue](https://github.com/markhazleton/BootstrapSpark/issues/new)
+Built with ❤️ by the BootstrapSpark community. [Report an issue](https://github.com/MakeBoldSolutions/BootstrapSpark/issues/new)

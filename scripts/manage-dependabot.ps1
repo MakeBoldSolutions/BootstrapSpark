@@ -110,7 +110,7 @@ function Merge-PRGroup {
         
         # Instructions for manual merge (GitHub CLI would go here)
         Write-Host "`n  To merge this PR:" -ForegroundColor Cyan
-        Write-Host "  1. Open: https://github.com/markhazleton/BootstrapSpark/pull/$($pr.Number)" -ForegroundColor White
+        Write-Host "  1. Open: https://github.com/MakeBoldSolutions/BootstrapSpark/pull/$($pr.Number)" -ForegroundColor White
         Write-Host "  2. Comment: @dependabot rebase" -ForegroundColor White
         Write-Host "  3. Wait for CI checks to pass" -ForegroundColor White
         Write-Host "  4. Click 'Approve and Merge'" -ForegroundColor White
@@ -132,7 +132,7 @@ function Validate-Merges {
     npm audit
     
     Write-Host "`n2️⃣ Checking for remaining Dependabot alerts..." -ForegroundColor Yellow
-    Write-Host "   Visit: https://github.com/markhazleton/BootstrapSpark/security/dependabot" -ForegroundColor Cyan
+    Write-Host "   Visit: https://github.com/MakeBoldSolutions/BootstrapSpark/security/dependabot" -ForegroundColor Cyan
     
     Write-Host "`n3️⃣ Running full test suite..." -ForegroundColor Yellow
     $testResult = Test-All

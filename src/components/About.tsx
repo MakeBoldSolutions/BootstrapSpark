@@ -98,7 +98,7 @@ const About: React.FC = () => {
             <p className="lead mb-4 mx-auto">{profile.introduction}</p>
             <div className="d-flex justify-content-center gap-2 mb-4">
               <a
-                href="https://github.com/markhazleton/BootstrapSpark"
+                href="https://github.com/MakeBoldSolutions/BootstrapSpark"
                 className="btn btn-outline-primary d-inline-flex align-items-center"
                 target="_blank"
                 rel="noopener noreferrer"
