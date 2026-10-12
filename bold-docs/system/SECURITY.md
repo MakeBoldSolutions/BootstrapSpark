@@ -242,3 +242,5 @@ We aim to respond within 48 hours and provide a fix within 7 days for critical i
 The cleanup validation ran `npm audit`: six high-severity findings remain in development tooling, through the SWA CLI certificate chain (`selfsigned` / `node-forge`) and static-copy watcher chain (`chokidar` / `braces`). The registry currently offers no patched `node-forge` or `braces` release. Updating static-copy to 4.1.1 does not remove its vulnerable watcher chain. The suggested force fixes downgrade the top-level tools to obsolete releases; they were not applied.
 
 `npm audit --omit=dev` reports zero findings. This does not clear the development-tooling findings; recheck upstream releases and run the full audit before future dependency changes. The deprecated jest-dom 6.10.0 release was replaced with 7.0.1 and validated with the test suite.
+
+Rechecked on 2026-10-12 after the Vitest 5.0.4 patch update: six development-tooling findings remain, with zero production findings. Registry versions for braces and node-forge remain 3.0.3 and 1.4.0; no patched upstream version was available.

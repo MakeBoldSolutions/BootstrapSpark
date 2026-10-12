@@ -54,3 +54,9 @@ None.
 - README and system-document local Markdown links resolve. All 46 direct package uses are recorded in NPM_DEPENDENCIES.md; five API manifests declare no dependencies.
 - Changed-file Prettier and git diff --check passed. Collector stale references reconciled. Existing user dependency and generated CSS changes retained.
 - A CI run under CPU contention emitted Rolldown's plugin timing diagnostic; the subsequent analysis build completed in 823 ms without that diagnostic. No warnings were globally disabled.
+
+## Approved Dependency Maintenance — 2026-10-12
+
+Repeated the user-approved dependency refresh and usage validation within AC5. ncu updated vitest, @vitest/ui and @vitest/coverage-v8 together from 5.0.3 to 5.0.4; npm install updated the lockfile. Verified imports/assets, script commands, configuration providers and implicit type usage for all 46 direct packages; none are unused. The five API manifests remain dependency-free.
+
+Validation: npm ls --depth=0 reports no invalid peers; npm outdated and ncu report only the documented TypeScript 7 exception. npm audit remains at six high-severity development findings; production audit is clear. npm run build:ci passes lint, type-check, all 182 tests in 34 files, coverage thresholds (87.71% lines, 71.87% branches, 79.86% functions), and production/deploy build. The build emitted a plugin-timing diagnostic under load, with no annotation or chunk-size warnings. Updated usage/security documentation and verified formatting/diff checks. No commit or push was performed for this refresh.

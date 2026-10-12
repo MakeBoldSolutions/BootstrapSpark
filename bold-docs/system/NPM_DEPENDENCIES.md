@@ -1,6 +1,6 @@
 # NPM dependencies
 
-Validated on 2026-10-11 with npm audit, npm outdated, ncu, npm ci and the CI build. Every direct package has a runtime, asset, type, test or command use below. Transitive dependencies are managed by package-lock.json.
+Rechecked on 2026-10-12 with npm audit, npm outdated, ncu, direct-usage inspection, npm ls and the CI build. The last clean-install validation was on 2026-10-11. Every direct package has a runtime, asset, type, test or command use below. Transitive dependencies are managed by package-lock.json.
 
 | Package                       | Requested version | Group       | Use                                                             |
 | ----------------------------- | ----------------- | ----------- | --------------------------------------------------------------- |
@@ -29,8 +29,8 @@ Validated on 2026-10-11 with npm audit, npm outdated, ncu, npm ci and the CI bui
 | `@types/react`                | `^19.3.0`         | Development | TypeScript JSX/React component declarations                     |
 | `@types/react-dom`            | `^19.3.0`         | Development | TypeScript createRoot declarations                              |
 | `@vitejs/plugin-react`        | `^6.1.2`          | Development | vite.config.ts and vitest.config.ts transforms/refresh          |
-| `@vitest/coverage-v8`         | `^5.0.3`          | Development | vitest.config.ts coverage provider and test:coverage            |
-| `@vitest/ui`                  | `^5.0.3`          | Development | package.json test:ui interactive runner                         |
+| `@vitest/coverage-v8`         | `^5.0.4`          | Development | vitest.config.ts coverage provider and test:coverage            |
+| `@vitest/ui`                  | `^5.0.4`          | Development | package.json test:ui interactive runner                         |
 | `concurrently`                | `^10.0.6`         | Development | package.json start/dev Vite and Sass watchers                   |
 | `eslint`                      | `^10.12.0`        | Development | package.json lint and lint-staged checks                        |
 | `eslint-plugin-react-hooks`   | `^7.1.1`          | Development | eslint.config.js hook rules                                     |
@@ -49,7 +49,7 @@ Validated on 2026-10-11 with npm audit, npm outdated, ncu, npm ci and the CI bui
 | `typescript-eslint`           | `^8.71.1`         | Development | eslint.config.js TypeScript lint configuration                  |
 | `vite`                        | `^8.3.4`          | Development | package.json dev/build/preview and configs bundler/server       |
 | `vite-plugin-static-copy`     | `^4.1.1`          | Development | vite.config.ts fonts, RSS and fallback copying                  |
-| `vitest`                      | `^5.0.3`          | Development | tests/, vitest.config.ts and test scripts runner                |
+| `vitest`                      | `^5.0.4`          | Development | tests/, vitest.config.ts and test scripts runner                |
 
 ## Compatibility and removals
 
