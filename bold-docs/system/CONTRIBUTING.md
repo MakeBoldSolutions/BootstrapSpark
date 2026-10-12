@@ -5,7 +5,7 @@ BootstrapSpark is a React/Vite demonstration site using Bootstrap 5 plus SCSS. I
 ## Prerequisites
 
 - Node.js `>=26.0.0`
-- npm `12.0.2`
+- npm `12.2.0`
 - Git
 
 ## Setup
@@ -14,7 +14,7 @@ Use the repository version files before installing:
 
 ```powershell
 nvm use
-npm install -g npm@12.0.2
+npm install -g npm@12.2.0
 ```
 
 If `npm install` or `npm ci` reports `EBADENGINE`, the active shell is not using the required Node/npm versions.

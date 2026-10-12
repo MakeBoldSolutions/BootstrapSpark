@@ -9,7 +9,7 @@ Deployment builds require:
 | Requirement | Value      |
 | ----------- | ---------- |
 | Node.js     | `>=26.0.0` |
-| npm         | `12.0.2`   |
+| npm         | `12.2.0`   |
 
 Use `npm ci` from the repository root before building.
 
@@ -44,7 +44,7 @@ output_location: ""
 skip_app_build: true
 ```
 
-This avoids rebuilding the app inside the Azure deploy action with a runtime that may differ from Node.js `>=26.0.0` and npm `12.0.2`.
+This avoids rebuilding the app inside the Azure deploy action with a runtime that may differ from Node.js `>=26.0.0` and npm `12.2.0`.
 
 ## CI Gates
 

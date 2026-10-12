@@ -23,7 +23,7 @@ The PromptSpark Chat component provides real-time AI chat functionality via Sign
 
 ### Exact HubConnectionBuilder Configuration
 
-**Location**: [src/components/Chat.tsx](../src/components/Chat.tsx#L132-L144)
+**Location**: [src/components/Chat.tsx](../../src/components/Chat.tsx#L132-L144)
 
 ```typescript
 import * as signalR from "@microsoft/signalr";
@@ -34,16 +34,16 @@ const hubUrl = import.meta.env.VITE_SIGNALR_HUB_URL || "https://web.makeboldspar
 // Build the SignalR connection
 connection.current = new signalR.HubConnectionBuilder()
   .withUrl(hubUrl, {
-    skipNegotiation: false,              // ✅ Allow SignalR to negotiate transport
-    withCredentials: false,              // ❌ No cookies/credentials sent
-    timeout: 30000,                      // 30 second timeout
+    skipNegotiation: false, // ✅ Allow SignalR to negotiate transport
+    withCredentials: false, // ❌ No cookies/credentials sent
+    timeout: 30000, // 30 second timeout
     transport:
       signalR.HttpTransportType.WebSockets |
       signalR.HttpTransportType.ServerSentEvents |
-      signalR.HttpTransportType.LongPolling,  // All three transports enabled
+      signalR.HttpTransportType.LongPolling, // All three transports enabled
   })
-  .withAutomaticReconnect([0, 2000, 10000, 30000])  // Retry delays in ms
-  .configureLogging(signalR.LogLevel.Information)   // Log connection events
+  .withAutomaticReconnect([0, 2000, 10000, 30000]) // Retry delays in ms
+  .configureLogging(signalR.LogLevel.Information) // Log connection events
   .build();
 ```
 
@@ -61,6 +61,7 @@ connection.current = new signalR.HubConnectionBuilder()
 - **WebSocket URL**: `wss://web.makeboldspark.com/chatHub` (after upgrade)
 
 **Environment Variable Override**:
+
 ```typescript
 const hubUrl = import.meta.env.VITE_SIGNALR_HUB_URL || "https://web.makeboldspark.com/chatHub";
 ```
@@ -72,12 +73,12 @@ const hubUrl = import.meta.env.VITE_SIGNALR_HUB_URL || "https://web.makeboldspar
 
 ### 2. Options Object
 
-| Option | Value | Purpose |
-|--------|-------|---------|
-| `skipNegotiation` | `false` | Allow SignalR to negotiate which transport to use (required for fallback) |
-| `withCredentials` | `false` | Do NOT send cookies or credentials (public hub, no authentication) |
-| `timeout` | `30000` | 30-second timeout for connection attempts |
-| `transport` | `WebSockets \| ServerSentEvents \| LongPolling` | Enable all three transport methods |
+| Option            | Value                                           | Purpose                                                                   |
+| ----------------- | ----------------------------------------------- | ------------------------------------------------------------------------- |
+| `skipNegotiation` | `false`                                         | Allow SignalR to negotiate which transport to use (required for fallback) |
+| `withCredentials` | `false`                                         | Do NOT send cookies or credentials (public hub, no authentication)        |
+| `timeout`         | `30000`                                         | 30-second timeout for connection attempts                                 |
+| `transport`       | `WebSockets \| ServerSentEvents \| LongPolling` | Enable all three transport methods                                        |
 
 #### Transport Type Details
 
@@ -118,6 +119,7 @@ SignalR attempts transports in this order:
 ```
 
 **Retry Delays** (in milliseconds):
+
 - 1st retry: 0ms (immediate)
 - 2nd retry: 2,000ms (2 seconds)
 - 3rd retry: 10,000ms (10 seconds)
@@ -125,7 +127,8 @@ SignalR attempts transports in this order:
 - After 4 failures: Connection abandoned by SignalR
 
 **Manual Retry** (separate from automatic):
-- Location: [Chat.tsx#L147-L156](../src/components/Chat.tsx#L147-L156)
+
+- Location: [Chat.tsx#L147-L156](../../src/components/Chat.tsx#L147-L156)
 - Max manual retries: 3
 - Exponential backoff: `Math.pow(2, retryCount) * 1000` (1s, 2s, 4s)
 
@@ -136,6 +139,7 @@ SignalR attempts transports in this order:
 ```
 
 **Log Levels**:
+
 - `Trace`: Most verbose
 - `Debug`: Debugging details
 - `Information`: ✅ **Current setting** (connection events, errors)
@@ -173,11 +177,12 @@ SignalR attempts transports in this order:
 
 ### Vite Proxy Configuration
 
-**Location**: [vite.config.ts](../vite.config.ts#L94-L99)
+**Location**: [vite.config.ts](../../vite.config.ts#L94-L99)
 
 **SignalR Proxy**: ❌ **NONE**
 
 The Vite config ONLY proxies:
+
 - `/rss-feed` → `https://markhazleton.com/feed.xml`
 
 ```typescript
@@ -194,11 +199,12 @@ proxy: {
 
 ### Azure Static Web App Proxy
 
-**Location**: [staticwebapp.config.json](../staticwebapp.config.json)
+**Location**: [staticwebapp.config.json](../../staticwebapp.config.json)
 
 **SignalR Proxy**: ❌ **NONE**
 
 The Azure config only routes:
+
 - `/api/*` → Azure Functions (joke/projects/rss proxies)
 - `/assets/*` → Static assets
 - All other paths → SPA fallback
@@ -219,17 +225,17 @@ The site runs on a **different origin** from the SignalR hub, requiring explicit
 
 #### CSP Configuration
 
-**Location**: [staticwebapp.config.json](../staticwebapp.config.json#L63) (production)  
-**Location**: [vite.config.ts](../vite.config.ts#L91-L93) (development)
+**Location**: [staticwebapp.config.json](../../staticwebapp.config.json#L63) (production)
+**Location**: [vite.config.ts](../../vite.config.ts#L91-L93) (development)
 
 **Exact CSP Header** (both files MUST match):
 
 ```
-Content-Security-Policy: 
-  default-src 'self'; 
-  connect-src 
-    'self' 
-    https://markhazleton.com 
+Content-Security-Policy:
+  default-src 'self';
+  connect-src
+    'self'
+    https://markhazleton.com
     https://*.markhazleton.com           ← Covers web.makeboldspark.com
     wss://web.makeboldspark.com      ← WebSocket connection
     ws://localhost:*                      ← Local dev WebSocket
@@ -245,18 +251,18 @@ Content-Security-Policy:
 
 **Critical CSP Rules for SignalR**:
 
-| Directive | Value | Purpose |
-|-----------|-------|---------|
-| `connect-src` | `wss://web.makeboldspark.com` | Allow WebSocket connection |
-| `connect-src` | `https://*.markhazleton.com` | Allow HTTPS fallback transports (SSE, Long Polling) |
-| `connect-src` | `ws://localhost:*` | Allow local dev WebSocket |
-| `connect-src` | `http://localhost:*` | Allow local dev HTTP fallback |
+| Directive     | Value                         | Purpose                                             |
+| ------------- | ----------------------------- | --------------------------------------------------- |
+| `connect-src` | `wss://web.makeboldspark.com` | Allow WebSocket connection                          |
+| `connect-src` | `https://*.markhazleton.com`  | Allow HTTPS fallback transports (SSE, Long Polling) |
+| `connect-src` | `ws://localhost:*`            | Allow local dev WebSocket                           |
+| `connect-src` | `http://localhost:*`          | Allow local dev HTTP fallback                       |
 
 **⚠️ WARNING**: Do NOT remove `wss://web.makeboldspark.com` or SignalR will fail with CSP errors.
 
 ### CORS Headers
 
-**Location**: [staticwebapp.config.json](../staticwebapp.config.json#L67-L69)
+**Location**: [staticwebapp.config.json](../../staticwebapp.config.json#L67-L69)
 
 ```json
 {
@@ -289,13 +295,14 @@ await connection.invoke(
 ```
 
 **Example**:
+
 ```typescript
 await connection.invoke(
   "SendMessage",
-  "John Doe",              // userName
-  "What is React?",        // message
-  "1709827200000",         // conversationId (timestamp)
-  "ReactSpark"             // variantName
+  "John Doe", // userName
+  "What is React?", // message
+  "1709827200000", // conversationId (timestamp)
+  "ReactSpark" // variantName
 );
 ```
 
@@ -321,13 +328,13 @@ connection.on("ReceiveMessage", (user: string, messageChunk: string) => {
 
 ```typescript
 // Server sends multiple chunks:
-ReceiveMessage("ReactSpark", "React is ")
-ReceiveMessage("ReactSpark", "a JavaScript ")
-ReceiveMessage("ReactSpark", "library for building ")
-ReceiveMessage("ReactSpark", "user interfaces.")
+ReceiveMessage("ReactSpark", "React is ");
+ReceiveMessage("ReactSpark", "a JavaScript ");
+ReceiveMessage("ReactSpark", "library for building ");
+ReceiveMessage("ReactSpark", "user interfaces.");
 
 // UI displays (accumulated):
-"React is a JavaScript library for building user interfaces."
+("React is a JavaScript library for building user interfaces.");
 ```
 
 ---
@@ -349,14 +356,14 @@ ReceiveMessage("ReactSpark", "user interfaces.")
 
 #### 2. Manual Retry on Setup Failure
 
-**Location**: [Chat.tsx#L147-L156](../src/components/Chat.tsx#L147-L156)
+**Location**: [Chat.tsx#L147-L156](../../src/components/Chat.tsx#L147-L156)
 
 ```typescript
 connection.current.onclose((error) => {
   if (error && retryCount < 3) {
     setTimeout(
       () => setupSignalRConnection(retryCount + 1),
-      Math.pow(2, retryCount) * 1000  // Exponential backoff: 1s, 2s, 4s
+      Math.pow(2, retryCount) * 1000 // Exponential backoff: 1s, 2s, 4s
     );
   }
 });
@@ -369,7 +376,7 @@ connection.current.onclose((error) => {
 
 #### 3. User-Triggered Retry
 
-**Location**: [Chat.tsx#L230-L283](../src/components/Chat.tsx#L230-L283)
+**Location**: [Chat.tsx#L230-L283](../../src/components/Chat.tsx#L230-L283)
 
 ```typescript
 const handleRetryConnection = () => {
@@ -392,12 +399,12 @@ connection.current.onclose((error) => {
 
 connection.current.onreconnecting((error) => {
   console.log("SignalR reconnecting:", error);
-  setIsConnecting(true);  // Show "Connecting..." UI
+  setIsConnecting(true); // Show "Connecting..." UI
 });
 
 connection.current.onreconnected(() => {
   console.log("SignalR reconnected");
-  setIsConnecting(false);  // Hide "Connecting..." UI
+  setIsConnecting(false); // Hide "Connecting..." UI
 });
 ```
 
@@ -410,6 +417,7 @@ connection.current.onreconnected(() => {
 **Purpose**: Override the default SignalR hub URL
 
 **Usage**:
+
 ```typescript
 const hubUrl = import.meta.env.VITE_SIGNALR_HUB_URL || "https://web.makeboldspark.com/chatHub";
 ```
@@ -434,30 +442,35 @@ VITE_SIGNALR_HUB_URL=https://your-custom-hub.com/chatHub
 #### 1. CSP Errors in Console
 
 **Symptom**:
+
 ```
-Refused to connect to 'wss://web.makeboldspark.com/chatHub' 
+Refused to connect to 'wss://web.makeboldspark.com/chatHub'
 because it violates the following Content Security Policy directive: "connect-src 'self'"
 ```
 
 **Solution**: Verify CSP includes `wss://web.makeboldspark.com` in `connect-src`
 
 **Files to Check**:
-- [staticwebapp.config.json](../staticwebapp.config.json#L63)
-- [vite.config.ts](../vite.config.ts#L91-L93)
+
+- [staticwebapp.config.json](../../staticwebapp.config.json#L63)
+- [vite.config.ts](../../vite.config.ts#L91-L93)
 
 #### 2. Connection Timeout
 
 **Symptom**:
+
 ```
 Error: Failed to start the connection: Error: Server timeout elapsed without receiving a message from the server.
 ```
 
 **Causes**:
+
 - Server is down
 - Network issues
 - Firewall blocking WebSockets
 
 **Solution**:
+
 - Check server status at `https://web.makeboldspark.com`
 - Verify network allows WebSocket connections
 - Check browser DevTools Network tab for failed WebSocket upgrade
@@ -465,6 +478,7 @@ Error: Failed to start the connection: Error: Server timeout elapsed without rec
 #### 3. Transport Fallback
 
 **Symptom**:
+
 ```
 Information: WebSocket failed; trying Server Sent Events...
 Information: ServerSentEvents failed; trying Long Polling...
@@ -479,12 +493,14 @@ Information: ServerSentEvents failed; trying Long Polling...
 #### 4. CORS Preflight Failure
 
 **Symptom**:
+
 ```
-Access to XMLHttpRequest at 'https://web.makeboldspark.com/chatHub/negotiate' 
+Access to XMLHttpRequest at 'https://web.makeboldspark.com/chatHub/negotiate'
 from origin 'http://localhost:3000' has been blocked by CORS policy
 ```
 
 **Solution**: Verify server (WebSpark) has correct CORS headers:
+
 ```
 Access-Control-Allow-Origin: *
 Access-Control-Allow-Methods: GET, POST, OPTIONS
@@ -542,13 +558,14 @@ Access-Control-Allow-Headers: Content-Type, X-Requested-With
 - [API Dependencies](./API_DEPENDENCIES.md) - Overview of all external APIs
 - [Security](./SECURITY.md) - CSP and CORS configuration details
 - [Architecture](./ARCHITECTURE.md) - Overall application architecture
-- [Chat Component Source](../src/components/Chat.tsx) - Full implementation
+- [Chat Component Source](../../src/components/Chat.tsx) - Full implementation
 
 ---
 
 ## Summary
 
 **Exact SignalR Setup**:
+
 - **URL**: `https://web.makeboldspark.com/chatHub` (hardcoded, no .env override in use)
 - **Transports**: WebSockets → SSE → Long Polling (all enabled)
 - **Authentication**: None (public hub, no access token)

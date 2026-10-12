@@ -1,6 +1,6 @@
 # Standards
 
-> Migrated from `.documentation/memory/constitution.md`'s "Additional Standards" and "Governance" sections (`source: migrated(constitution.md)`) — narrower or secondary conventions that don't rise to backbone principles.
+> Migrated from the former constitution's "Additional Standards" and "Governance" sections (`source: migrated(constitution.md)`) — narrower or secondary conventions that don't rise to backbone principles.
 
 ## Performance
 
@@ -19,7 +19,7 @@
 
 - Azure Static Web Apps is the primary deployment target
 - Build output directory must be `/docs` — Vite `outDir: "docs"` writes the static artifact, and Azure Static Web Apps uploads that prebuilt directory
-- CI and deployment use Node.js `>=26.0.0` and npm `12.0.2`
+- CI and deployment use Node.js `>=26.0.0` and npm `12.2.0`
 - `npm run build` and `npm run build:deploy` must not refresh remote data; use `npm run sync:data` explicitly when remote-backed snapshots should be refreshed
 - A `.nojekyll` file is written to `docs/` during build
 - `npm run clean` removes `/docs` before each build — never commit build artifacts to `/docs` manually

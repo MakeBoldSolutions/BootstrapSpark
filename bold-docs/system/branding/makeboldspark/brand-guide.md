@@ -74,19 +74,19 @@ The logo is built from three ideas:
 
 Primary logo:
 
-- Use `assets/logo/makeboldspark-logo-horizontal.svg` in headers, website footers, documents, and product shells.
+- Use `bold-docs/system/branding/makeboldspark/assets/logo/makeboldspark-logo-horizontal.svg` in headers, website footers, documents, and product shells.
 
 Stacked logo:
 
-- Use `assets/logo/makeboldspark-logo-stacked.svg` when the format is square, centered, or presentation-like.
+- Use `bold-docs/system/branding/makeboldspark/assets/logo/makeboldspark-logo-stacked.svg` when the format is square, centered, or presentation-like.
 
 Mark only:
 
-- Use `assets/logo/makeboldspark-mark.svg` for favicons, avatars, app icons, profile photos, and small UI.
+- Use `bold-docs/system/branding/makeboldspark/assets/logo/makeboldspark-mark.svg` for favicons, avatars, app icons, profile photos, and small UI.
 
 One-color mark:
 
-- Use `assets/logo/makeboldspark-mark-one-color.svg` when color output is limited.
+- Use `bold-docs/system/branding/makeboldspark/assets/logo/makeboldspark-mark-one-color.svg` when color output is limited.
 
 ## Clear Space
 
@@ -117,22 +117,22 @@ Do not:
 
 ### Primary
 
-| Token | Hex | RGB | Use |
-| --- | --- | --- | --- |
-| `--mbs-ink` | `#040605` | `4, 6, 5` | Primary text, dark logo areas |
-| `--mbs-spark` | `#E94B1B` | `233, 75, 27` | Primary action, spark, highlights |
-| `--mbs-ember` | `#982407` | `152, 36, 7` | Deep accent, active states |
-| `--mbs-paper` | `#F7F4EF` | `247, 244, 239` | Warm background |
+| Token         | Hex       | RGB             | Use                               |
+| ------------- | --------- | --------------- | --------------------------------- |
+| `--mbs-ink`   | `#040605` | `4, 6, 5`       | Primary text, dark logo areas     |
+| `--mbs-spark` | `#E94B1B` | `233, 75, 27`   | Primary action, spark, highlights |
+| `--mbs-ember` | `#982407` | `152, 36, 7`    | Deep accent, active states        |
+| `--mbs-paper` | `#F7F4EF` | `247, 244, 239` | Warm background                   |
 
 ### Supporting
 
-| Token | Hex | RGB | Use |
-| --- | --- | --- | --- |
-| `--mbs-smoke` | `#787878` | `120, 120, 120` | Secondary text |
-| `--mbs-steel` | `#2F3A3D` | `47, 58, 61` | Technical surfaces, charts |
-| `--mbs-mint` | `#3FBFA8` | `63, 191, 168` | Success, freshness, positive status |
-| `--mbs-gold` | `#F2B84B` | `242, 184, 75` | Warnings, attention, diagrams |
-| `--mbs-white` | `#FFFFFF` | `255, 255, 255` | Reversed text, clean surfaces |
+| Token         | Hex       | RGB             | Use                                 |
+| ------------- | --------- | --------------- | ----------------------------------- |
+| `--mbs-smoke` | `#787878` | `120, 120, 120` | Secondary text                      |
+| `--mbs-steel` | `#2F3A3D` | `47, 58, 61`    | Technical surfaces, charts          |
+| `--mbs-mint`  | `#3FBFA8` | `63, 191, 168`  | Success, freshness, positive status |
+| `--mbs-gold`  | `#F2B84B` | `242, 184, 75`  | Warnings, attention, diagrams       |
+| `--mbs-white` | `#FFFFFF` | `255, 255, 255` | Reversed text, clean surfaces       |
 
 ## Color Usage
 
@@ -171,7 +171,15 @@ Primary typeface:
 Fallback stack:
 
 ```css
-font-family: "Inter Tight", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+font-family:
+  "Inter Tight",
+  Inter,
+  ui-sans-serif,
+  system-ui,
+  -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  sans-serif;
 ```
 
 Use weights:
@@ -332,12 +340,11 @@ Use `makeboldspark` as the folder name for portable asset packages.
 
 For every Make Bold Spark website or project:
 
-- Add favicon links from `templates/html-head.html`.
-- Include the CSS variables from `css/makeboldspark-brand.css`.
+- Add favicon links from `bold-docs/system/branding/makeboldspark/templates/html-head.html`.
+- Include the CSS variables from `bold-docs/system/branding/makeboldspark/css/makeboldspark-brand.css`.
 - Use the public name `Make Bold Spark` in page titles.
 - Use `MakeBoldSpark` only where spaces are impractical.
 - Keep primary CTAs visually consistent.
 - Verify color contrast for small text.
 - Include Open Graph metadata and the social share image.
 - Keep logo clear space intact.
-

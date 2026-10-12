@@ -25,7 +25,7 @@ jobs:
           node-version: "26"
           cache: "npm"
       - name: Setup npm
-        run: npm install -g npm@12.0.2
+        run: npm install -g npm@12.2.0
       - name: Install dependencies
         run: npm ci
       - name: CI build
@@ -49,7 +49,7 @@ jobs:
           node-version: "26"
           cache: "npm"
       - name: Setup npm
-        run: npm install -g npm@12.0.2
+        run: npm install -g npm@12.2.0
       - name: Install dependencies
         run: npm ci
       - name: CI build

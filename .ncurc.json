@@ -1,4 +1,3 @@
 {
-  "target": "minor",
-  "reject": ["eslint-plugin-react-hooks"]
+  "target": "latest"
 }

@@ -12,7 +12,6 @@
     "incremental": true, // Enables faster builds with incremental compilation
     "noEmit": true, // Prevents emitting files during 'npm run dev'
     "types": ["vitest/globals"],
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "@tests/*": ["./tests/*"]

@@ -4,7 +4,7 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 import fs from "fs";
 import path from "path";
 import strip from "@rollup/plugin-strip";
-import type { LogOrStringHandler, RollupLog } from "rollup";
+import { getVendorChunk, handleBuildWarning } from "./scripts/build-policy.ts";
 
 // Get the current date-time during the build
 const buildDate = new Date().toISOString();
@@ -19,30 +19,18 @@ const createNoJekyllFile = () => {
   };
 };
 
-const suppressKnownThirdPartyWarnings = (
-  warning: RollupLog,
-  defaultHandler: LogOrStringHandler
-) => {
-  const warningId = warning.id ?? "";
-  if (
-    warning.code === "INVALID_ANNOTATION" &&
-    warningId.includes("@microsoft/signalr/dist/esm/Utils.js")
-  ) {
-    return;
-  }
-
-  defaultHandler(warning);
-};
-
 export default defineConfig({
   // Set base path explicitly to "/" for Azure Static Web Apps
   // This ensures assets are served from the correct location
   base: "/",
   build: {
     outDir: "docs",
-    rollupOptions: {
-      onwarn: suppressKnownThirdPartyWarnings,
+    rolldownOptions: {
+      onwarn: handleBuildWarning,
       output: {
+        codeSplitting: {
+          groups: [{ name: (id) => getVendorChunk(id) ?? null, debugName: "react-vendor" }],
+        },
         // Add hash to all file names for cache busting
         entryFileNames: "assets/[name]-[hash].js",
         chunkFileNames: "assets/[name]-[hash].js",
@@ -66,8 +54,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-      "@tests": path.resolve(__dirname, "./tests"),
+      "@": path.resolve(import.meta.dirname, "./src"),
+      "@tests": path.resolve(import.meta.dirname, "./tests"),
       "@webfonts": "/webfonts", // Alias for webfonts
     },
   },
@@ -232,9 +220,5 @@ export default defineConfig({
         secure: true,
       },
     },
-  },
-  esbuild: {
-    jsxFactory: "React.createElement",
-    jsxFragment: "React.Fragment",
   },
 });

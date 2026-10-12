@@ -13,7 +13,7 @@
 
 **🚀 A modern, high-performance React portfolio showcasing enterprise-grade web development**
 
-[🌐 Live Demo](https://Bootstrap.makeboldspark.com) • [📖 Documentation](./.documentation/) • [ Report Bug](https://github.com/MakeBoldSolutions/BootstrapSpark/issues)
+[🌐 Live Demo](https://Bootstrap.makeboldspark.com) • [📖 Documentation](./bold-docs/system/) • [ Report Bug](https://github.com/MakeBoldSolutions/BootstrapSpark/issues)
 
 </div>
 
@@ -47,7 +47,7 @@
 
 ## ⚠️ Important: Content Security Policy (CSP)
 
-**🛑 Before modifying security headers, READ THIS: [CSP_README.md](CSP_README.md)**
+**🛑 Before modifying security headers, READ THIS: [Security Guide](bold-docs/system/SECURITY.md)**
 
 This site uses a frontend-only architecture that pulls all content from external sources (markhazleton.com). The CSP configuration is **intentionally permissive** and required for the site to function. Tightening the CSP will break:
 
@@ -56,7 +56,7 @@ This site uses a frontend-only architecture that pulls all content from external
 - Development hot reload
 - External API integrations
 
-See [CSP_README.md](CSP_README.md) and [documentation/SECURITY.md](documentation/SECURITY.md) for details.
+See the [Security Guide](bold-docs/system/SECURITY.md) for details.
 
 ---
 
@@ -100,7 +100,7 @@ graph TD
 
 - **📝 TypeScript** - Strict type safety and IntelliSense support
 - **🧪 Modern Tooling** - ESLint, Prettier, SCSS compilation
-- **📚 Documentation** - Comprehensive guides in `/documentation`
+- **📚 Documentation** - Comprehensive guides in `bold-docs/system/`
 - **🔄 Hot Reload** - Instant development feedback with Vite
 
 ---
@@ -110,18 +110,18 @@ graph TD
 <details>
 <summary><strong>🎯 Frontend Core</strong></summary>
 
-- **React 19.1** - Latest React with concurrent features
-- **TypeScript 5.9** - Type safety and modern JavaScript features
-- **Vite 7.0** - Lightning-fast build tool and development server
-- **React Router 7.7** - Client-side routing and navigation
+- **React 19.3** - Latest React with concurrent features
+- **TypeScript 6.0** - Type safety and modern JavaScript features
+- **Vite 8.3** - Lightning-fast build tool and development server
+- **React Router 7.18** - Client-side routing and navigation
 
 </details>
 
 <details>
 <summary><strong>🎨 Styling & UI</strong></summary>
 
-- **Bootstrap 5.3.7** - Responsive component framework
-- **SCSS/Sass 1.89** - Enhanced CSS with variables and mixins
+- **Bootstrap 5.3.8** - Responsive component framework
+- **SCSS/Sass 1.105** - Enhanced CSS with variables and mixins
 - **React Bootstrap 2.10** - Bootstrap components for React
 - **Bootstrap Icons 1.13** - Comprehensive icon library
 - **Bootswatch 5.3** - Bootstrap theme variants
@@ -132,16 +132,16 @@ graph TD
 <summary><strong>🔧 State & Data</strong></summary>
 
 - **React Context API** - Global state management
-- **Axios 1.11** - HTTP client for API requests
-- **date-fns 4.1** - Modern date utility library
-- **xml2js 0.6** - XML parsing for RSS feeds
+- **Native fetch** - HTTP requests with service fallback handling
+- **date-fns 4.4** - Modern date utility library
+- **DOMParser** - XML parsing for RSS feeds
 
 </details>
 
 <details>
 <summary><strong>🌐 APIs & Integration</strong></summary>
 
-- **SignalR 9.0** - Real-time web communication
+- **SignalR 10.0** - Real-time web communication
 - **OpenWeather API** - Weather data via WebSpark proxy
 - **JokeAPI** - Entertainment content integration
 - **Leaflet 1.9** - Interactive maps and geolocation
@@ -161,11 +161,11 @@ graph TD
 <details>
 <summary><strong>🧹 Development Tools</strong></summary>
 
-- **ESLint 9.32** - Code linting and quality
+- **ESLint 10.12** - Code linting and quality
 - **TypeScript ESLint** - TypeScript-specific linting
 - **Concurrently** - Run multiple npm scripts
 - **rimraf** - Cross-platform file removal
-- **ts-node** - TypeScript execution for scripts
+- **tsx** - TypeScript execution for scripts
 
 </details>
 
@@ -197,7 +197,7 @@ BootstrapSpark/
 │   └── ⚙️ utils/                   # Utility functions
 ├── ☁️ api/                          # Azure Functions
 │   └── proxy-rss/                  # RSS proxy function
-├── 📖 documentation/               # Project documentation
+├── 📖 bold-docs/                   # Project rules, system docs and active work
 ├── 🏗️ docs/                        # Production build output
 ├── ⚙️ .github/                     # GitHub workflows and templates
 └── 📋 Configuration files          # Various config files
@@ -209,8 +209,8 @@ BootstrapSpark/
 
 ### 📋 Prerequisites
 
-- **Node.js** 18+ ([Download](https://nodejs.org/))
-- **npm** 9+ (comes with Node.js)
+- **Node.js** >=26.0.0 ([Download](https://nodejs.org/))
+- **npm** 12.2.0
 - **Git** ([Download](https://git-scm.com/))
 
 ### ⚡ Installation
@@ -221,7 +221,7 @@ git clone https://github.com/MakeBoldSolutions/BootstrapSpark.git
 cd BootstrapSpark
 
 # Install dependencies
-npm install
+npm ci
 
 # Start development server
 npm run dev
@@ -266,7 +266,7 @@ This project uses automated code quality gates to ensure consistency:
 - **Pre-commit Hooks** - Husky runs linting and formatting before commits
 - **Prettier** - Automatic code formatting across all file types
 - **ESLint** - TypeScript and React best practices enforcement
-- **Vitest** - Unit testing with 80%+ coverage targets
+- **Vitest** - Unit, contract and integration tests; 70% lines/branches and 75% functions
 - **TypeScript Strict Mode** - Full type safety across the codebase
 
 **Commit Workflow:**
@@ -347,7 +347,7 @@ npm audit fix
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](./.documentation/CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [Contributing Guide](./bold-docs/system/CONTRIBUTING.md) for details.
 
 ### 🔄 Development Process
 
@@ -366,9 +366,9 @@ We welcome contributions! Please see our [Contributing Guide](./.documentation/C
 
 ## 📚 Documentation
 
-- 📖 **[Complete Documentation](./.documentation/)** - Comprehensive guides
-- ️ **[Architecture Guide](./.documentation/ARCHITECTURE.md)** - System design
-- 🚀 **[Deployment Guide](./.documentation/DEPLOYMENT.md)** - Deployment options
+- 📖 **[Complete Documentation](./bold-docs/system/)** - Comprehensive guides
+- ️ **[Architecture Guide](./bold-docs/system/ARCHITECTURE.md)** - System design
+- 🚀 **[Deployment Guide](./bold-docs/system/DEPLOYMENT.md)** - Deployment options
 
 ---
 
@@ -438,8 +438,8 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ## 🛠️ Technology Stack
 
-- **Frontend**: React 19.1, TypeScript 5.8, Vite 6.3
-- **Styling**: Bootstrap 5.3.5, SCSS/Sass, React Bootstrap, Bootstrap Icons
+- **Frontend**: React 19.3, TypeScript 6.0, Vite 8.3
+- **Styling**: Bootstrap 5.3.8, SCSS/Sass, React Bootstrap, Bootstrap Icons
 - **State Management**: React Context API
 - **Routing**: React Router v7.5
 - **APIs**: Axios, OpenWeather, JokeAPI, SignalR (real-time chat), XML2JS (RSS)
@@ -482,8 +482,8 @@ BootstrapSpark/
 
 ### Environment & Configuration
 
-- **Node.js**: v18 or higher
-- **npm**: v9+ recommended
+- **Node.js**: >=26.0.0
+- **npm**: 12.2.0
 - **.env files**: Supports environment-specific config via `.env`, `.env.development`, `.env.production`, etc. See `vite.config.ts` for details.
 - **Required Variables**: (example)
   - `VITE_BASE_URL` - Base URL for the app
@@ -498,7 +498,7 @@ git clone https://github.com/MakeBoldSolutions/BootstrapSpark.git
 cd BootstrapSpark
 
 # Install dependencies
-npm install
+npm ci
 ```
 
 ### Scripts
@@ -546,26 +546,25 @@ npm run preview # (optional, to preview build)
 
 This project uses **Dependabot** for automated dependency updates and security vulnerability detection.
 
+See [NPM dependency usage](bold-docs/system/NPM_DEPENDENCIES.md) for retained packages and compatibility constraints.
+
 ### 📚 Dependabot Documentation
 
 When Dependabot PRs appear, use these resources for organized remediation:
 
-- **[DEPENDABOT_QUICKSTART.md](DEPENDABOT_QUICKSTART.md)** - ⚡ Start here! Quick 5-minute guide
-- **[DEPENDABOT_REMEDIATION_PLAN.md](DEPENDABOT_REMEDIATION_PLAN.md)** - 📋 Comprehensive execution plan
-- **[DEPENDABOT_CHECKLIST.md](DEPENDABOT_CHECKLIST.md)** - ✅ Step-by-step checklist
-- **[.documentation/scripts/powershell/manage-dependabot.ps1](.documentation/scripts/powershell/manage-dependabot.ps1)** - 🤖 PowerShell automation helper
+- **[scripts/manage-dependabot.ps1](scripts/manage-dependabot.ps1)** - 🤖 PowerShell automation helper
 
 ### 🚀 Quick Start for Dependabot PRs
 
 ```powershell
 # See all open Dependabot PRs organized by priority
-.\.documentation\scripts\powershell\manage-dependabot.ps1 -Action list
+.\scripts\manage-dependabot.ps1 -Action list
 
 # Run tests before merging
-.\.documentation\scripts\powershell\manage-dependabot.ps1 -Action test-all
+.\scripts\manage-dependabot.ps1 -Action test-all
 
 # Get guided merge workflow
-.\.documentation\scripts\powershell\manage-dependabot.ps1 -Action merge-critical
+.\scripts\manage-dependabot.ps1 -Action merge-critical
 ```
 
 ### 🔍 Security Monitoring
@@ -587,59 +586,13 @@ npm audit --json
 
 ## 🧪 Testing
 
-- _No automated tests included yet._
-- **Manual Testing**: Use the live demo or local preview to verify features.
-- **Recommended**: Add unit/integration tests with Jest, React Testing Library, or Cypress.
+Vitest and React Testing Library cover unit, contract, and integration behavior. Run `npm run test` for watch mode or `npm run test:coverage` for a single coverage run. CI requires 70% lines/branches and 75% functions. Run `npm run build:ci` for lint, type-check, coverage, and production build.
 
 ## 🌐 Deployment
 
-### GitHub Pages
+Azure Static Web Apps is the primary deployment target. Pull requests run validation; pushes to `main` build and upload the generated `docs/` artifact using Node.js 26 and npm 12.2.0. The Azure action uses `app_location: docs` and `skip_app_build: true`; API source remains in `api/`. Generated artifacts are excluded from source control.
 
-1. **Build**: `npm run build` (outputs to `docs/`)
-2. **Push**: Commit and push `docs/` to `main` branch
-3. **Enable Pages**: In GitHub repo settings, set Pages source to `/docs` on `main`
-4. **Access**: `https://<your-username>.github.io/<repository-name>/`
-
-### Azure Static Web Apps
-
-1. **Config Files**:
-   - `staticwebapp.config.json`, `swa-cli.config.json`, `.github/workflows/azure-static-web-apps-gentle-smoke-063be0b10.yml`
-
-2. **CI/CD Workflow**: Automated publishing is handled by a GitHub Actions workflow:
-   - **Trigger:** Runs on push and pull requests to the `main` branch.
-   - **Jobs:**
-     - `build_and_deploy_job`: Builds and deploys the app and API unless the PR is closed.
-     - `close_pull_request_job`: Cleans up deployments when a PR is closed.
-
-   **Key Steps:**
-   1. **Checkout code:** Uses `actions/checkout@v3` with submodules.
-   2. **Setup Node.js:** Uses `actions/setup-node@v3` (Node 18, npm cache).
-   3. **Install dependencies:** Runs `npm ci` for clean install.
-   4. **OIDC Client:** Installs `@actions/core` and `@actions/http-client` for authentication.
-   5. **Get Id Token:** Uses `actions/github-script@v6` to retrieve an OIDC token for Azure authentication.
-   6. **Build and Deploy:** Uses `Azure/static-web-apps-deploy@v1` with these settings:
-      - `azure_static_web_apps_api_token`: Secure token from repo secrets
-      - `action`: "upload"
-      - `app_location`: `/` (root)
-      - `api_location`: `api` (serverless API)
-      - `output_location`: `docs` (Vite build output)
-      - `app_build_command`: `npm run build`
-      - `skip_app_build`/`skip_api_build`: false
-      - `github_id_token`: OIDC token for secure deployment
-
-   7. **Close PR Deployments:** When a PR is closed, the workflow runs a job to clean up preview deployments using the same Azure action.
-
-   **Reference:** See `.github/workflows/azure-static-web-apps-gentle-smoke-063be0b10.yml` for the full workflow file.
-
-3. **Local Dev**:
-
-   ```pwsh
-   npm install -g @azure/static-web-apps-cli
-   swa start
-   ```
-
-4. **Features**:
-   - Global CDN, SSL, serverless API, staging environments, advanced routing
+Use `npm run build` and `npm run preview` for local production checks. See the [Deployment Guide](bold-docs/system/DEPLOYMENT.md) and [CI workflow](.github/workflows/azure-static-web-apps-gentle-smoke-063be0b10.yml). GitHub Pages hosting would require a separate artifact workflow and matching Vite base path.
 
 ## 🛡️ Maintenance & Updating
 
@@ -667,7 +620,7 @@ Contributions are welcome!
 ## ❓ FAQ & Troubleshooting
 
 - **Q: Build fails on Windows?**
-  - A: Ensure Node.js v18+, use PowerShell, and check for locked files in `node_modules`.
+  - A: Ensure Node.js >=26.0.0 and npm 12.2.0, use PowerShell, and check for locked files in `node_modules`.
 - **Q: Weather/Chat/API not working?**
   - A: Check environment variables and API keys.
 - **Q: Styling issues?**
@@ -685,11 +638,6 @@ Contributions are welcome!
 - [Building My First React Site Using Vite and GitHub](https://markhazleton.com/articles/building-my-first-react-site-using-vite.html)
 - [Adding Weather to My Profile Application](https://markhazleton.com/articles/adding-weather-component-a-typescript-learning-journey.html)
 - [Using TypeScript with React: Lessons Learned](https://markhazleton.com/articles/using-typescript-with-react-lessons-learned.html)
-
-## 📖 Repo Story
-
-An evidence-based narrative of this repository's development history, contributor patterns, and architecture:
-[Repo Story (2026-04-06)](.documentation/repo-story/repo-story-2026-04-06.md)
 
 ## 📄 License
 

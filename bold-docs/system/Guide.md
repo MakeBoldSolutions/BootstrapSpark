@@ -1,6 +1,6 @@
 # Documentation Guide
 
-This is the living orientation document for `.documentation/`. It reflects the **current** state of the project's documentation surface.
+This is the living orientation document for `bold-docs/`. It reflects the **current** state of the project's documentation surface.
 
 ---
 
@@ -28,17 +28,19 @@ bold-docs/
 
 ## Key Files
 
-| File | Purpose |
-|---|---|
-| `memory/constitution.md` | Non-negotiable project principles. Read before making any changes. Version 1.1.1. |
-| `ARCHITECTURE.md` | System architecture, component structure, service data flow, styling approach |
-| `API_DEPENDENCIES.md` | External APIs used, their contracts, and fallback behaviour |
-| `CACHE_BUSTING.md` | Cache invalidation strategy: build-date-based in prod, timestamp-based in dev |
-| `CHANGELOG.md` | Release history following Keep a Changelog / SemVer |
-| `CONTRIBUTING.md` | How to contribute, testing strategy, PR requirements |
-| `DEPLOYMENT.md` | Deployment and release guide for Azure Static Web Apps and tag-driven GitHub Releases |
-| `SECURITY.md` | CSP policy, justified allowlist, intentional permissiveness rationale |
-| `PROMPTSPARK_CHAT.md` | SignalR-based real-time chat with AI personalities |
+[NPM dependency usage](NPM_DEPENDENCIES.md) records packages, usage, and compatibility constraints.
+
+| File                    | Purpose                                                                               |
+| ----------------------- | ------------------------------------------------------------------------------------- |
+| `bold-docs/backbone.md` | Non-negotiable project principles. Read before making any changes.                    |
+| `ARCHITECTURE.md`       | System architecture, component structure, service data flow, styling approach         |
+| `API_DEPENDENCIES.md`   | External APIs used, their contracts, and fallback behaviour                           |
+| `CACHE_BUSTING.md`      | Cache invalidation strategy: build-date-based in prod, timestamp-based in dev         |
+| `CHANGELOG.md`          | Release history following Keep a Changelog / SemVer                                   |
+| `CONTRIBUTING.md`       | How to contribute, testing strategy, PR requirements                                  |
+| `DEPLOYMENT.md`         | Deployment and release guide for Azure Static Web Apps and tag-driven GitHub Releases |
+| `SECURITY.md`           | CSP policy, justified allowlist, intentional permissiveness rationale                 |
+| `PROMPTSPARK_CHAT.md`   | SignalR-based real-time chat with AI personalities                                    |
 
 ---
 
@@ -46,15 +48,15 @@ bold-docs/
 
 Bold commands are invoked via `/bold-plan`, `/bold-build`, `/bold-ship` (and their subcommands) in any adapter host — Claude Code, Codex, Copilot. Bold's three-command surface doesn't map one-to-one onto DevSpark's; some DevSpark commands fold into a broader Bold command, and a few have no Bold equivalent yet.
 
-| DevSpark command | Bold equivalent |
-|---|---|
+| DevSpark command                                         | Bold equivalent                                                                                           |
+| -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
 | `/devspark.specify`, `/devspark.plan`, `/devspark.tasks` | `bold.plan` — tiered spec (Patch/Quick/Feature) covers requirements through task breakdown in one command |
-| `/devspark.implement` | `bold.build` |
-| `/devspark.harvest`, `/devspark.archive` | `bold.ship harvest` — classifies durable vs. historical and archives in one pass |
-| `/devspark.pr-review` | `bold.ship review` |
-| `/devspark.quickfix` | Not a separate command — the Patch tier within `bold.plan` |
-| `/devspark.site-audit` | *(no Bold equivalent yet)* |
-| `/devspark.release` | *(no Bold equivalent yet — see Release Automation below)* |
+| `/devspark.implement`                                    | `bold.build`                                                                                              |
+| `/devspark.harvest`, `/devspark.archive`                 | `bold.ship harvest` — classifies durable vs. historical and archives in one pass                          |
+| `/devspark.pr-review`                                    | `bold.ship review`                                                                                        |
+| `/devspark.quickfix`                                     | Not a separate command — the Patch tier within `bold.plan`                                                |
+| `/devspark.site-audit`                                   | _(no Bold equivalent yet)_                                                                                |
+| `/devspark.release`                                      | _(no Bold equivalent yet — see Release Automation below)_                                                 |
 
 ### Release Automation
 
@@ -70,4 +72,4 @@ Bold has no dedicated release command yet. The tag-driven GitHub Release flow (`
 
 ## Release Archives
 
-Versioned release artifacts live under `bold-docs/system/releases/vX.Y.Z/`. Each release folder contains release notes, metrics, and archived feature specs for that release cut.
+Versioned release artifacts live under `bold-docs/system/releases/vX.Y.Z/`. Release folders contain published release notes and metrics. Active feature specs live in `bold-docs/features/`; human-only history is kept separately.

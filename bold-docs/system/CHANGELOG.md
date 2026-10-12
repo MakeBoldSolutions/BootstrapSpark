@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Updated npm to 12.2.0, Vite to 8, Vitest to 5, and supported TypeScript to 6.0.3; aligned CI/runtime documentation. Removed unused ts-node and direct baseline-browser-mapping, classified Leaflet as runtime dependencies, and documented all direct package uses.
+- Split the shared React runtime into a vendor chunk and narrowly filter known SignalR/Zod annotation warnings while retaining actionable build warnings.
+- Updated build and contributor documentation for the current Bold layout, runtime contract, tests, and generated deployment artifacts.
+
 ## [0.1.0] - 2026-04-16
 
 ### Added
@@ -24,7 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **Build artifact handling** - Stopped treating generated deploy output and coverage reports as source-controlled artifacts, leaving CI responsible for production builds.
-- **Release workflow** - `/devspark.release` now relies on the upgraded release context contract in `.documentation/scripts/powershell/release-context.ps1`.
+- **Release workflow** - `/devspark.release` now relies on the upgraded release context contract in `bold-docs/overrides/scripts/powershell/release-context.ps1`.
 
 ### Architectural Decisions
 
